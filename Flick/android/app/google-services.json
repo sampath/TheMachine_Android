@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "520311364853",
+    "firebase_url": "https://flick-b0e2c.firebaseio.com",
+    "project_id": "flick-b0e2c",
+    "storage_bucket": "flick-b0e2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520311364853:android:7b55d557afe53a7f",
+        "android_client_info": {
+          "package_name": "com.flick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520311364853-l12nieqpk0g3qhrs58i8igqsrbdpkrjg.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "520311364853-99k2ihbg4d5ti4abmrnnah0h5pemr2bo.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "520311364853-0qmj0r6fgfpgljfn72c9hsqeg9akjrd8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkGYBOOOLPACRf97tLLu5KrxdF6pMNTIs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

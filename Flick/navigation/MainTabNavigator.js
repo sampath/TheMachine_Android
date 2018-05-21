@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import { StyleSheet, View, } from 'react-native';
+import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 
 import SettingsScreen from '../screens/SettingsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import HomeScreen from '../screens/HomeScreen';
 
-const RootTabNavigator = TabNavigator(
+
+export default TabNavigator(
     {
         Settings: {
             screen: SettingsScreen,
@@ -29,15 +30,3 @@ const RootTabNavigator = TabNavigator(
         animationEnabled: false,
     },
 )
-
-export default class RootNavigation extends React.Component {
-    render() {
-        return <RootTabNavigator />;
-    }
-}
-
-// const styles = StyleSheet.create({
-//   menu: {
-//     backgroundColor: #FF0000,
-//   },
-// });

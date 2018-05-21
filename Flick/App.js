@@ -8,24 +8,21 @@
  // cd %ANDROID_HOME%/tools && emulator.exe -avd Pixel_2_API_25
 
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { TabNavigator, TabBarBottom } from 'react-navigation';
-import RootNavigation from './navigation/MainTabNavigator';
+import MainTabNavigation from './navigation/MainTabNavigator';
+import RootNavigation from './navigation/RootNavigation';
 
 type Props = {};
 
 export default class App extends Component<Props> {
-  render() {
-    return (
-        <RootNavigation />
-    );
-  }
+
+    render() {
+        if (true) return <RootNavigation />;
+
+        return <LoginScreen />;
+    }
 }
 
 const styles = StyleSheet.create({

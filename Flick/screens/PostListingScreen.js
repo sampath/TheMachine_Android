@@ -1,22 +1,30 @@
 import React from 'react';
-import {
-    Button,
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
+import { Button, FormLabel, FormInput, FormValidationMessage, } from 'react-native-elements'
 
 export default class PostListingScreen extends React.Component {
+
     render() {
-        const { navigate } = this.props.navigation;
     
         return (
             <View style={styles.container}>
-                <Text>THIS IS THE POST LISTING PAGE</Text>
+                <FormLabel>Item Name</FormLabel>
+                <FormInput />
+
+                <FormLabel>Price</FormLabel>
+                <FormInput />
+
+                <FormLabel>Description</FormLabel>
+                <FormInput />
+
+                <FormLabel>Tags</FormLabel>
+                <FormInput />
+
+                <Button 
+                    title='Post'
+                    color='black'
+                    backgroundColor='#dcf4e8'
+                />
             </View>
         );
   }
