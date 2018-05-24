@@ -14,7 +14,7 @@ import { ListItem } from 'react-native-elements'
 const list = [
   {
     title: 'About',
-    icon: 'av-timer'
+    icon: 'info'
   },
   {
     title: 'Logout',
@@ -37,7 +37,7 @@ export default class SettingsScreen extends React.Component {
                         <ListItem
                             key={i}
                             title={item.title}
-                            // leftIcon={{ name: item.icon }}
+                            leftIcon={{ name: item.icon }}
                         />
                     ))
                 }

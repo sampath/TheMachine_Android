@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
-import { Button, FormLabel, FormInput, FormValidationMessage, } from 'react-native-elements'
+import { Button, FormLabel, FormInput, FormValidationMessage, Input } from 'react-native-elements'
 
 export default class PostListingScreen extends React.Component {
 
@@ -8,17 +8,21 @@ export default class PostListingScreen extends React.Component {
     
         return (
             <View style={styles.container}>
-                <FormLabel>Item Name</FormLabel>
-                <FormInput />
+                <Input 
+                    placeholder='Item Name'
+                />
 
-                <FormLabel>Price</FormLabel>
-                <FormInput />
+                <Input 
+                    placeholder='Price'
+                />
 
-                <FormLabel>Description</FormLabel>
-                <FormInput />
+                <Input 
+                    placeholder='Description'
+                />
 
-                <FormLabel>Tags</FormLabel>
-                <FormInput />
+                <Input 
+                    placeholder='Tags'
+                />
 
                 <Button 
                     title='Post'

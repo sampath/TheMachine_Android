@@ -18,7 +18,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <SearchBar
-                    // platform='android'
+                    platform='android'
                     conatinerStyle={{
                         color: 'red',
                         backgroundColor: 'red'
