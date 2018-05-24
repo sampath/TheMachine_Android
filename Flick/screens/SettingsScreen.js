@@ -9,6 +9,22 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { ListItem } from 'react-native-elements'
+
+const list = [
+  {
+    title: 'About',
+    icon: 'av-timer'
+  },
+  {
+    title: 'Logout',
+    icon: 'flight-takeoff'
+  },
+  {
+    title: 'Delete Account',
+    icon: 'flight-takeoff'
+  },
+]
 
 export default class SettingsScreen extends React.Component {
     render() {
@@ -16,7 +32,15 @@ export default class SettingsScreen extends React.Component {
     
         return (
             <View style={styles.container}>
-                <Text>THIS IS THE SETTINGS PAGE</Text>
+                {
+                    list.map((item, i) => (
+                        <ListItem
+                            key={i}
+                            title={item.title}
+                            // leftIcon={{ name: item.icon }}
+                        />
+                    ))
+                }
             </View>
         );
   }

@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, SearchBar } from 'react-native-elements';
 
 
 export default class HomeScreen extends React.Component {
@@ -17,16 +17,25 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <SearchBar
+                    // platform='android'
+                    conatinerStyle={{
+                        color: 'red',
+                        backgroundColor: 'red'
+                    }}
+                    // onChangeText={someMethod}
+                    // onClear={someMethod}
+                    placeholder='Type Here...' 
+                />
                 <Text>THIS IS THE HOME PAGE</Text>
                 <Button
                     title='New Post'
-                    onPress={() => this.props.navigation.navigate('Post Listing')}
+                    onPress={() => this.props.navigation.navigate('PostListing')}
                     color='black'
                     backgroundColor='#dcf4e8'
                     buttonStyle={{
                         width: 100,
                         position: 'absolute',
-                        // bottom: 200,
                     }}
                 />
             </View>

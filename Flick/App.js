@@ -18,8 +18,19 @@ type Props = {};
 
 export default class App extends Component<Props> {
 
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            loggedIn: true,
+        };
+    }
+
     render() {
-        if (true) return <RootNavigation />;
+
+        console.log(this.state.loggedIn);
+
+        if (this.state.loggedIn) return <RootNavigation />;
 
         return <LoginScreen />;
     }
