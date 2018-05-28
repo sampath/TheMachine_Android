@@ -137,6 +137,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-google-signin')
+    implementation (project(':react-native-firebase')) {
+        transitive = false
+    }
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:23.4.0"
 
@@ -148,6 +152,9 @@ dependencies {
     // Firebase dependencies
     implementation "com.google.android.gms:play-services-base:15.0.0"
     implementation "com.google.firebase:firebase-core:15.0.2"
+
+
+
 }
 
 // Run this once to be able to run the application with BUCK
@@ -157,4 +164,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-// apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'

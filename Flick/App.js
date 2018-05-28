@@ -14,6 +14,9 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import MainTabNavigation from './navigation/MainTabNavigator';
 import RootNavigation from './navigation/RootNavigation';
 
+import firebase from 'react-native-firebase';
+import { GoogleSignin } from 'react-native-google-signin';
+
 type Props = {};
 
 export default class App extends Component<Props> {
