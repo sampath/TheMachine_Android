@@ -9,7 +9,10 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { ListItem } from 'react-native-elements'
+import { 
+    Header,
+    ListItem, 
+} from 'react-native-elements'
 
 const list = [
   {
@@ -32,6 +35,14 @@ export default class SettingsScreen extends React.Component {
     
         return (
             <View style={styles.container}>
+                <Header backgroundColor={colorCodes.mintCustom}
+                    centerComponent={{ 
+                        text:'Settings', 
+                        style: { 
+                            color: '#000' 
+                        } 
+                    }}
+                />
                 {
                     list.map((item, i) => (
                         <ListItem
