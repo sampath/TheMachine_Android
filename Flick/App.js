@@ -15,8 +15,8 @@ import './global.js'
 import MainTabNavigation from './navigation/MainTabNavigator';
 import RootNavigation from './navigation/RootNavigation';
 
-import firebase from 'react-native-firebase';
-import { GoogleSignin } from 'react-native-google-signin';
+//import firebase from 'react-native-firebase';
+//import { GoogleSignin } from 'react-native-google-signin';
 
 type Props = {};
 
