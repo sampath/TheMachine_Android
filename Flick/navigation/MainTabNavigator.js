@@ -36,6 +36,7 @@ export default TabNavigator(
         },
     },
     {
+        initialRouteName: 'Home',
         tabBarPosition: 'bottom',
         tabBarOptions : {
             showIcon: true,
