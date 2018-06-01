@@ -3,7 +3,7 @@ import {
     StyleSheet, 
     View, 
 } from 'react-native';
-import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { StackNavigator, createBottomTabNavigator, TabBarBottom } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import ProfileScreen from '../screens/ProfileScreen';
@@ -11,28 +11,21 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 
-export default TabNavigator(
+export default createBottomTabNavigator(
     {
-        Profile: {
-            screen: ProfileScreen,
-            navigationOptions: {
-                label: '',
-                tabBarIcon: ({tintColor}) => <Icon name='accessibility' color={tintColor} />
-            }
-        },
         Home: {
             screen: HomeScreen,
             navigationOptions: {
                 label: '',
                 tabBarIcon: ({tintColor}) => <Icon name='home' color={tintColor} />
-            }
+            },
         },
-        Settings: {
-            screen: SettingsScreen,
+        Profile: {
+            screen: ProfileScreen,
             navigationOptions: {
                 label: '',
-                tabBarIcon: ({tintColor}) => <Icon name='settings' color={tintColor} />
-            }
+                tabBarIcon: ({tintColor}) => <Icon name='accessibility' color={tintColor} />
+            },
         },
     },
     {

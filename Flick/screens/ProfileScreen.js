@@ -50,25 +50,25 @@ export default class HomeScreen extends React.Component {
 
             },
             {
-                key: '1',
+                key: '3',
                 name: 'And Another one',
                 price: '$10',
                 thumbnail: 'info',
             },
             {
-                key: '1',
+                key: '4',
                 name: 'And Another one',
                 price: '$10',
                 thumbnail: 'info',
             },
             {
-                key: '1',
+                key: '5',
                 name: 'And Another one',
                 price: '$10',
                 thumbnail: 'info',
             },
             {
-                key: '1',
+                key: '6',
                 name: 'And Another one',
                 price: '$10',
                 thumbnail: 'info',

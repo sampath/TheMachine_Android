@@ -1,12 +1,12 @@
 import React from 'react';
-import {StackNavigator} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import PostListingScreen from '../screens/PostListingScreen';
 import LoginScreen from '../screens/LoginScreen';
 
 
-const RootStackNavigator = StackNavigator(
+const RootStackNavigator = createStackNavigator(
     {
         Main: {
             screen: MainTabNavigator,

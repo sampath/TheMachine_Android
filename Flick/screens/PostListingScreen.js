@@ -52,17 +52,18 @@ export default class PostListingScreen extends React.Component {
                         placeholder='Tags'
                     />
                 </View>
-
-                <Button 
-                    title='Post'
-                    titleStyle={{
-                        color:'black',
-                    }}
-                    buttonStyle={{
-                        backgroundColor: colorCodes.mintCustom,
-                        width: '70%',
-                    }}
-                />
+                <View style={styles.postButton}>
+                    <Button 
+                        title='Preview'
+                        titleStyle={{
+                            color:'black',
+                        }}
+                        buttonStyle={{
+                            backgroundColor: colorCodes.mintCustom,
+                            width: 370,
+                        }}
+                    />
+                </View>
             </View>
         );
   }
@@ -82,7 +83,10 @@ const styles = StyleSheet.create({
     backgroundColor: colorCodes.lightGreyCustom,
     borderBottomWidth: 0,
   },
-  postButon: {
+  postButton: {
+    position: 'absolute',
+    bottom: 0,
     alignItems: 'center',
-  }
+    justifyContent: 'center',
+  },
 });

@@ -19,6 +19,14 @@ import {
 import ActionButton from 'react-native-action-button';
 
 export default class HomeScreen extends React.Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            listingData: []
+        };
+    }
+
 
     renderSeparator() {
         return (
@@ -33,85 +41,57 @@ export default class HomeScreen extends React.Component {
         );
     };
 
+    getAllListings() {
+        fetch('http://128.54.196.210:3000/listings/', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+            let dataObj = responseData
+
+            let dataArray = Object.keys(dataObj).map(key => {
+                let obj = dataObj[key];
+                obj.key = key;
+                return obj;
+            });
+
+            console.log(dataArray);
+
+            this.setState({
+                listingData: dataArray
+            });
+        })
+        .done();
+    }
+
+    componentDidMount() {
+        this.getAllListings();
+        // console.log(this.state.listingData);
+    }
+
     render() {
 
         const listingData = [
-            {   
+            'hello': {   
                 key: '1',
-                name: 'JBL Speaker',
+                itemName: 'JBL Speaker',
                 price: '$10',
                 thumbnail: 'info',
             },
-            {
+            'what': {
                 key: '2',
-                name: 'Another Speaker',
+                itemName: 'Another Speaker',
                 price: '$10',
                 thumbnail: 'info',
 
             },
-            {
+            'what2': {
                 key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '1',
-                name: 'And Another one',
+                itemName: 'And Another one',
                 price: '$10',
                 thumbnail: 'info',
             },
@@ -132,19 +112,16 @@ export default class HomeScreen extends React.Component {
                             backgroundColor: '#d0e8dd',
                         }}
                     />
-
                 </Header>
 
                 <FlatList
-                    data={listingData}
+                    data={this.state.listingData}
                     renderItem={({item}) => (
                         <ListItem
                             roundAvatar
-                            title={item.name}
+                            title={item.itemName}
                             subtitle={item.price}
-                            leftIcon={{ 
-                                name: item.thumbnail
-                            }}
+                            avatar={{uri: item.pictureURL}}
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
