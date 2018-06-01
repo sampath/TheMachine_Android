@@ -27,42 +27,45 @@ export default class PostListingScreen extends React.Component {
                     centerComponent={{ 
                         text:'New Listing', 
                         style: { 
-                            color: '#000' 
+                            color: '#000'
                         } 
                     }}
                 />
 
-                <Input 
-                    containerStyle={styles.textInput}
-                    placeholder='Item Name'
-                />
+                <View style={styles.bodyStyle}>
 
-                <Input
-                    containerStyle={styles.textInput} 
-                    placeholder='Price'
-                />
-
-                <Input
-                    containerStyle={styles.textInput} 
-                    placeholder='Description'
-                />
-
-                <Input
-                    containerStyle={styles.textInput} 
-                    placeholder='Tags'
-                />
-
-                <View style={styles.postButton}>
-                    <Button 
-                        title='Preview'
-                        titleStyle={{
-                            color:'black',
-                        }}
-                        buttonStyle={{
-                            backgroundColor: colorCodes.mintCustom,
-                            width: 370,
-                        }}
+                    <Input 
+                        containerStyle={styles.textInput}
+                        placeholder='Item Name'
                     />
+
+                    <Input
+                        containerStyle={styles.textInput} 
+                        placeholder='Price'
+                    />
+
+                    <Input
+                        containerStyle={styles.textInput} 
+                        placeholder='Description'
+                    />
+
+                    <Input
+                        containerStyle={styles.textInput} 
+                        placeholder='Tags'
+                    />
+
+                    <View style={styles.postButton}>
+                        <Button 
+                            title='Preview'
+                            titleStyle={{
+                                color:'black',
+                            }}
+                            buttonStyle={{
+                                backgroundColor: colorCodes.mintCustom,
+                                width: 370,
+                            }}
+                        />
+                    </View>
                 </View>
             </View>
         );
@@ -73,7 +76,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center'
+  },
+  bodyStyle: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 25
   },
   textInputView: {
     alignItems: 'center',
