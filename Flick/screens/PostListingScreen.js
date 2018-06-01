@@ -22,6 +22,7 @@ export default class PostListingScreen extends React.Component {
     
         return (
             <View style={styles.container}>
+            
                 <Header backgroundColor={colorCodes.mintCustom}
                     centerComponent={{ 
                         text:'New Listing', 
@@ -31,27 +32,26 @@ export default class PostListingScreen extends React.Component {
                     }}
                 />
 
-                <View style={styles.textInputView}>
-                    <Input 
-                        containerStyle={styles.textInput}
-                        placeholder='Item Name'
-                    />
+                <Input 
+                    containerStyle={styles.textInput}
+                    placeholder='Item Name'
+                />
 
-                    <Input
-                        containerStyle={styles.textInput} 
-                        placeholder='Price'
-                    />
+                <Input
+                    containerStyle={styles.textInput} 
+                    placeholder='Price'
+                />
 
-                    <Input
-                        containerStyle={styles.textInput} 
-                        placeholder='Description'
-                    />
+                <Input
+                    containerStyle={styles.textInput} 
+                    placeholder='Description'
+                />
 
-                    <Input
-                        containerStyle={styles.textInput} 
-                        placeholder='Tags'
-                    />
-                </View>
+                <Input
+                    containerStyle={styles.textInput} 
+                    placeholder='Tags'
+                />
+
                 <View style={styles.postButton}>
                     <Button 
                         title='Preview'
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center'
   },
   textInputView: {
     alignItems: 'center',
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   },
   postButton: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 25,
     alignItems: 'center',
     justifyContent: 'center',
   },

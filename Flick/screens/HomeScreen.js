@@ -42,7 +42,7 @@ export default class HomeScreen extends React.Component {
     };
 
     getAllListings() {
-        fetch('http://128.54.196.210:3000/listings/', {
+        fetch('https://flick-staging.herokuapp.com/listings/', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
