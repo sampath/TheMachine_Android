@@ -11,6 +11,9 @@ const RootStackNavigator = createStackNavigator(
         Main: {
             screen: MainTabNavigator,
         },
+        ViewListing: {
+            screen: ViewListingScreen
+        }
         PostListing: {
             screen: PostListingScreen
         },

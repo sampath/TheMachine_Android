@@ -27,7 +27,6 @@ export default class HomeScreen extends React.Component {
         };
     }
 
-
     renderSeparator() {
         return (
             <View
@@ -41,7 +40,7 @@ export default class HomeScreen extends React.Component {
         );
     };
 
-    getAllListings() {
+    getListingData() {
         fetch('https://flick-staging.herokuapp.com/listings', {
             method: 'GET',
             headers: {
@@ -73,28 +72,6 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-
-        const listingData = [
-            'hello': {   
-                key: '1',
-                itemName: 'JBL Speaker',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            'what': {
-                key: '2',
-                itemName: 'Another Speaker',
-                price: '$10',
-                thumbnail: 'info',
-
-            },
-            'what2': {
-                key: '1',
-                itemName: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-        ]
 
         return (
             <View style={styles.container}>

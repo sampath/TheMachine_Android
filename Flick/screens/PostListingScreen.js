@@ -54,7 +54,7 @@ export default class PostListingScreen extends React.Component {
                 </View>
                 <View style={styles.postButton}>
                     <Button 
-                        title='Preview'
+                        title='Post'
                         titleStyle={{
                             color:'black',
                         }}
