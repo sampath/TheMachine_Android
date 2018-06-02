@@ -159,6 +159,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  flickHeader: {
+    height: 60
+  },
   userInfo: {
     alignItems: 'center',
     paddingTop: 12,

@@ -24,6 +24,7 @@ export default class PostListingScreen extends React.Component {
             <View style={styles.container}>
             
                 <Header backgroundColor={colorCodes.mintCustom}
+                    outerContainerStyles={styles.flickHeader}
                     centerComponent={{ 
                         text:'New Listing', 
                         style: { 
@@ -76,6 +77,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  flickHeader: {
+    height: 60,
   },
   bodyStyle: {
     flex: 1,

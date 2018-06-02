@@ -78,7 +78,8 @@ export default class HomeScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Header backgroundColor={colorCodes.mintCustom}>
+                <Header backgroundColor={colorCodes.mintCustom}
+                    outerContainerStyles={styles.flickHeader}>
                     <Icon name='filter-list'/>
                     <SearchBar style={styles.searchBar}
                         platform='android'
@@ -127,6 +128,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  flickHeader: {
+    height: 60,
   },
   searchBar: {
     width: '20%',

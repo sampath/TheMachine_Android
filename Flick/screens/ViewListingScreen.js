@@ -4,13 +4,14 @@ import {
     Platform,
     FlatList,
     StyleSheet,
-    Text,
     TouchableOpacity,
     View,
 } from 'react-native';
 import { 
     Header,
+    Text,
     Icon,
+    Rating,
     Button, 
     List,
     ListItem,
@@ -55,6 +56,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
+                    outerContainerStyles={styles.flickHeader}
                     centerComponent={{ 
                         text: listingInfo.itemName, 
                         style: { 
@@ -63,10 +65,40 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
 
-                <Text>Price: {listingInfo.price}</Text>
-                <Text>Description: {listingInfo.description}</Text>
-                <Text>Rating: {listingInfo.avgRating}</Text>
-                <Text>Tags: {listingInfo.tags}</Text>
+                <View style={styles.postInfo}>
+                    <Text h4 style={styles.marginBottom}>
+                        Price: ${listingInfo.price}/day
+                    </Text>
+
+                    <Text h4>
+                        Description: 
+                    </Text>
+                    <Text h5 style={[styles.subText, styles.marginBottom]}>
+                        {listingInfo.description}
+                    </Text>
+
+                    <View style={styles.inline}>
+                        <Text h4 style={[styles.marginBottom, {marginRight: 13}]}>
+                            Rating:
+                        </Text>
+                        <Rating
+                            fractions={1}
+                            imageSize={25}
+                            startingValue={listingInfo.avgRating}
+                            readonly
+                        />
+                    </View>
+
+
+                    <Text h4>
+                        Tags:
+                    </Text>
+                    <Text h5 style={[styles.subText, styles.marginBottom]}>
+                        {listingInfo.tags}
+                    </Text>
+
+
+                </View>
 
                 {interestedComponent}
                 
@@ -112,7 +144,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  searchBar: {
-    width: '20%',
+  flickHeader: {
+    height: 60,
+  },
+  postInfo: {
+    padding: 15,
+  },
+  listingText: {
+    marginBottom: 20,
+  },
+  subText: {
+    fontWeight: '300',
+    fontSize: 20,
+  },
+  marginBottom: {
+    marginBottom: 20,
+  },
+  inline: {
+    flexDirection: 'row',
   }
+
 });
