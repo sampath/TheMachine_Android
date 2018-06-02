@@ -67,43 +67,68 @@ export default class ViewListingScreen extends React.Component {
                     centerComponent={{ 
                         text: listingInfo.itemName, 
                         style: { 
-                            color: '#000'
+                            color: '#000',
+                            fontSize: 20,
                         } 
                     }}
                 />
 
-                <View style={styles.postInfo}>
-                    <Text h4 style={styles.marginBottom}>
-                        Price: ${listingInfo.price}/day
-                    </Text>
+                <View style={styles.listingBody}>
 
-                    <Text h4>
-                        Description: 
-                    </Text>
-                    <Text h5 style={[styles.subText, styles.marginBottom]}>
-                        {listingInfo.description}
-                    </Text>
-
-                    <View style={styles.inline}>
-                        <Text h4 style={[styles.marginBottom, {marginRight: 13}]}>
-                            Rating:
-                        </Text>
-                        <Rating
-                            fractions={1}
-                            imageSize={25}
-                            startingValue={listingInfo.avgRating}
-                            readonly
+                    <View style={styles.listingPic}>
+                        <Image
+                            style={{
+                                width: 175,
+                                height: 175,
+                                borderRadius: 87.5,
+                                borderWidth: 7,
+                                borderColor: "lightgrey",
+                            }}
+                            source={{uri: listingInfo.pictureURL}}
                         />
                     </View>
 
+                    <View style={styles.postInfo}>
+                        <Text h4 style={styles.titles}>
+                            Price:
+                        </Text>
 
-                    <Text h4>
-                        Tags:
-                    </Text>
-                    <Text h5 style={[styles.subText, styles.marginBottom]}>
-                        {listingInfo.tags}
-                    </Text>
+                        <Text h2 style={[styles.marginBottom, {fontSize: 40, color: "black"}]}>
+                            ${listingInfo.price}/day
+                        </Text>
 
+                        <View style={styles.inline}>
+                            <Text h4 style={[styles.titles, styles.marginBottom]}>
+                                Rating:
+                            </Text>
+                            <Rating
+                                style={{
+                                    paddingTop: 10,
+                                    paddingLeft: 10,
+                                }}
+                                fractions={1}
+                                imageSize={25}
+                                startingValue={listingInfo.avgRating}
+                                readonly
+                            />
+                        </View>
+
+                        <Text h4 style={styles.titles}>
+                            Description: 
+                        </Text>
+                        <Text h5 style={[styles.subText, styles.marginBottom]}>
+                            {listingInfo.description}
+                        </Text>
+
+                        <Text h4 style={styles.titles}>
+                            Tags:
+                        </Text>
+                        <Text h5 style={[styles.subText, styles.marginBottom]}>
+                            {listingInfo.tags}
+                        </Text>
+
+
+                    </View>
 
                 </View>
 
@@ -179,10 +204,18 @@ const styles = StyleSheet.create({
     height: 60,
   },
   postInfo: {
+    marginTop: 75,
     padding: 15,
   },
   listingText: {
     marginBottom: 20,
+  },
+  listingPic: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    paddingRight: 25,
+    marginTop: 25,
+
   },
   subText: {
     fontWeight: '300',
@@ -193,6 +226,10 @@ const styles = StyleSheet.create({
   },
   inline: {
     flexDirection: 'row',
+  },
+  titles: {
+    fontWeight: '100',
+    fontSize: 30
   }
 
 });
