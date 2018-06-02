@@ -5,7 +5,9 @@ import {
     FlatList,
     StyleSheet,
     TouchableOpacity,
+    TouchableHighlight,
     View,
+    Modal,
 } from 'react-native';
 import { 
     Header,
@@ -18,12 +20,13 @@ import {
 } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 
-export default class HomeScreen extends React.Component {
+export default class ViewListingScreen extends React.Component {
     constructor(props) {
         super(props);
     
         this.state = {
-            listingData: []
+            listingData: [],
+            modalVisible: false,
         };
     }
 
@@ -39,6 +42,10 @@ export default class HomeScreen extends React.Component {
             />
         );
     };
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
 
     render() {
         var interestedComponent;
@@ -100,8 +107,32 @@ export default class HomeScreen extends React.Component {
 
                 </View>
 
+                <Button onPress={() => this.setModalVisible(true)}/>
+
                 {interestedComponent}
                 
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    presentationStyle='formSheet'
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        alert('Modal has been closed.');
+                }}>
+                    <View style={{marginTop: 22}}>
+                        <View>
+                            <Text>Hello World!</Text>
+
+                            <TouchableHighlight
+                                onPress={() => {
+                                  this.setModalVisible(!this.state.modalVisible);
+                            }}>
+                                <Text>Hide Modal</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
         );
   }
