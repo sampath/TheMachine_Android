@@ -69,8 +69,8 @@ export default class ViewListingScreen extends React.Component {
                             name='arrow-back'
                             type='ionicons'
                             color='#000'
-                            onPress={() => this.props.navigation.navigate('HomeScreen')}
-                            />
+                            onPress={() => this.props.navigation.goBack(null)}
+                        />
                     }
                     centerComponent={{ 
                         text: listingInfo.itemName, 
