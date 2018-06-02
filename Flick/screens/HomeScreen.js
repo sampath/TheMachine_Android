@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
         };
     }
 
-
+    // A simple separator to separate listings in the view
     renderSeparator() {
         return (
             <View
@@ -41,6 +41,7 @@ export default class HomeScreen extends React.Component {
         );
     };
 
+    // Uses GET request to query all listing data
     getAllListings() {
         fetch('https://flick-staging.herokuapp.com/listings/', {
             method: 'GET',
@@ -68,12 +69,9 @@ export default class HomeScreen extends React.Component {
         .done();
     }
 
+    // After component renders, get the listing data for the list
     componentDidMount() {
         this.getAllListings();
-    }
-
-    viewListing() {
-        this.props.navigation.navigate('ViewListing');
     }
 
     render() {
@@ -123,6 +121,7 @@ export default class HomeScreen extends React.Component {
         );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

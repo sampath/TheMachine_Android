@@ -12,7 +12,6 @@ import {
     Header,
     Icon,
     Button, 
-    SearchBar,
     List,
     ListItem,
 } from 'react-native-elements';
@@ -40,36 +39,15 @@ export default class HomeScreen extends React.Component {
         );
     };
 
-    getListingData() {
-        fetch('https://flick-staging.herokuapp.com/listings', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            let dataObj = responseData
-
-            let dataArray = Object.keys(dataObj).map(key => {
-                let obj = dataObj[key];
-                obj.key = key;
-                return obj;
-            });
-
-            this.setState({
-                listingData: dataArray
-            });
-        })
-        .done();
-    }
-
-    // componentDidMount() {
-    //     this.getAllListings();
-    // }
-
     render() {
+        var interestedComponent;
+        // if (user.Id === listingInfo.ownerId) {
+        if (false) {
+            interestedComponent = <InterestedList />;
+        } else {
+            console.log("InterestedButton");
+            interestedComponent = <InterestedButton />;
+        }
 
         let listingInfo = this.props.navigation.state.params.listingInfo;
         console.log(listingInfo);
@@ -89,10 +67,44 @@ export default class HomeScreen extends React.Component {
                 <Text>Description: {listingInfo.description}</Text>
                 <Text>Rating: {listingInfo.avgRating}</Text>
                 <Text>Tags: {listingInfo.tags}</Text>
+
+                {interestedComponent}
                 
             </View>
         );
   }
+}
+
+class InterestedList extends React.Component {
+    componentDidMount() {
+        this.getInterestedUsers();
+    }
+
+    render() {
+        return (
+            <Text>This is empty</Text>
+        );
+    }
+}
+
+class InterestedButton extends React.Component {
+
+    newTransaction(userId, ownerId, listingId) {
+
+    }
+
+    render() {
+        return (
+            <ActionButton 
+                buttonColor={colorCodes.mintCustom}
+                onPress={this.newTransaction}
+                buttonTextStyle={{
+                    color: 'black',
+                }}
+                renderIcon={() => <Icon type='ionicon' name='md-heart'/>}
+            />
+        );
+    }
 }
 
 const styles = StyleSheet.create({
