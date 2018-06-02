@@ -53,7 +53,7 @@ export default class PostListingScreen extends React.Component {
                         containerStyle={styles.textInput} 
                         placeholder='Tags'
                     />
-
+                    
                     <View style={styles.postButton}>
                         <Button 
                             title='Preview'

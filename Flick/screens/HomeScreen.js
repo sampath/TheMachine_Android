@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
         };
     }
 
-
+    // A simple separator to separate listings in the view
     renderSeparator() {
         return (
             <View
@@ -41,6 +41,7 @@ export default class HomeScreen extends React.Component {
         );
     };
 
+    // Uses GET request to query all listing data
     getAllListings() {
         fetch('https://flick-staging.herokuapp.com/listings/', {
             method: 'GET',
@@ -68,34 +69,12 @@ export default class HomeScreen extends React.Component {
         .done();
     }
 
+    // After component renders, get the listing data for the list
     componentDidMount() {
         this.getAllListings();
-        // console.log(this.state.listingData);
     }
 
     render() {
-
-        const listingData = [
-            'hello': {   
-                key: '1',
-                itemName: 'JBL Speaker',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            'what': {
-                key: '2',
-                itemName: 'Another Speaker',
-                price: '$10',
-                thumbnail: 'info',
-
-            },
-            'what2': {
-                key: '1',
-                itemName: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-        ]
 
         return (
             <View style={styles.container}>
@@ -122,6 +101,10 @@ export default class HomeScreen extends React.Component {
                             title={item.itemName}
                             subtitle={item.price}
                             avatar={{uri: item.pictureURL}}
+                            onPress={() => this.props.navigation.navigate(
+                                'ViewListing', 
+                                {listingInfo: item}
+                            )}
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
@@ -138,6 +121,7 @@ export default class HomeScreen extends React.Component {
         );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
