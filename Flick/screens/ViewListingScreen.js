@@ -18,7 +18,7 @@ import {
 } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 
-export default class HomeScreen extends React.Component {
+export default class ViewListingScreen extends React.Component {
     constructor(props) {
         super(props);
     
@@ -57,6 +57,14 @@ export default class HomeScreen extends React.Component {
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     outerContainerStyles={styles.flickHeader}
+                    leftComponent={
+                        <Icon
+                            name='arrow-back'
+                            type='ionicons'
+                            color='#000'
+                            onPress={() => this.props.navigation.navigate('HomeScreen')}
+                            />
+                    }
                     centerComponent={{ 
                         text: listingInfo.itemName, 
                         style: { 
