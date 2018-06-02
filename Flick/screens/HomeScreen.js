@@ -101,7 +101,7 @@ export default class HomeScreen extends React.Component {
                             roundAvatar
                             title={item.itemName}
                             subtitle={item.price}
-                            avatar={{uri: item.pictureURL}}
+                            leftAvatar={{ source: {uri: item.pictureURL} }}
                             onPress={() => this.props.navigation.navigate(
                                 'ViewListing', 
                                 {listingInfo: item}
@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
                 
                 <ActionButton 
                     buttonColor={colorCodes.mintCustom}
-                    onPress={() => this.props.navigation.navigate('PostListing')}
+                    onPress={() => this.props.navigation.navigate('Confirmation')}
                     buttonTextStyle={{
                         color: 'black',
                     }}
