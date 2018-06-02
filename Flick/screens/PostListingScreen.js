@@ -67,7 +67,6 @@ export default class PostListingScreen extends React.Component {
                         />
                     </View>
                 </View>
-
             </View>
         );
   }
