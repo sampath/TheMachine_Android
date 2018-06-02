@@ -58,8 +58,6 @@ export default class HomeScreen extends React.Component {
                 return obj;
             });
 
-            console.log(dataArray);
-
             this.setState({
                 listingData: dataArray
             });
@@ -67,49 +65,31 @@ export default class HomeScreen extends React.Component {
         .done();
     }
 
-    componentDidMount() {
-        this.getAllListings();
-    }
+    // componentDidMount() {
+    //     this.getAllListings();
+    // }
 
     render() {
 
+        let listingInfo = this.props.navigation.state.params.listingInfo;
+        console.log(listingInfo);
+
         return (
             <View style={styles.container}>
-                <Header backgroundColor={colorCodes.mintCustom}>
-                    <Icon name='filter-list'/>
-                    <SearchBar style={styles.searchBar}
-                        platform='android'
-                        placeholder='Type Here...' 
-                        containerStyle={{
-                            backgroundColor: colorCodes.mintCustom,
-                            width: '92%'
-                        }}
-                        inputContainerStyle={{
-                            backgroundColor: '#d0e8dd',
-                        }}
-                    />
-                </Header>
-
-                <FlatList
-                    data={this.state.listingData}
-                    renderItem={({item}) => (
-                        <ListItem
-                            roundAvatar
-                            title={item.itemName}
-                            subtitle={item.price}
-                            avatar={{uri: item.pictureURL}}
-                        />
-                    )}
-                    ItemSeparatorComponent={this.renderSeparator}
-                />
-                
-                <ActionButton 
-                    buttonColor={colorCodes.mintCustom}
-                    onPress={() => this.props.navigation.navigate('PostListing')}
-                    buttonTextStyle={{
-                        color: 'black',
+                <Header backgroundColor={colorCodes.mintCustom}
+                    centerComponent={{ 
+                        text: listingInfo.itemName, 
+                        style: { 
+                            color: '#000'
+                        } 
                     }}
                 />
+
+                <Text>Price: {listingInfo.price}</Text>
+                <Text>Description: {listingInfo.description}</Text>
+                <Text>Rating: {listingInfo.avgRating}</Text>
+                <Text>Tags: {listingInfo.tags}</Text>
+                
             </View>
         );
   }

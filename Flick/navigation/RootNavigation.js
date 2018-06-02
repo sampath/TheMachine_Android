@@ -2,8 +2,9 @@ import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
-import PostListingScreen from '../screens/PostListingScreen';
 import LoginScreen from '../screens/LoginScreen';
+import PostListingScreen from '../screens/PostListingScreen';
+import ViewListingScreen from '../screens/ViewListingScreen';
 
 
 const RootStackNavigator = createStackNavigator(
@@ -13,7 +14,7 @@ const RootStackNavigator = createStackNavigator(
         },
         ViewListing: {
             screen: ViewListingScreen
-        }
+        },
         PostListing: {
             screen: PostListingScreen
         },

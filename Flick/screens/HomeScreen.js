@@ -72,29 +72,11 @@ export default class HomeScreen extends React.Component {
         this.getAllListings();
     }
 
+    viewListing() {
+        this.props.navigation.navigate('ViewListing');
+    }
+
     render() {
-
-        const listingData = [
-            'hello': {   
-                key: '1',
-                itemName: 'JBL Speaker',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            'what': {
-                key: '2',
-                itemName: 'Another Speaker',
-                price: '$10',
-                thumbnail: 'info',
-
-            },
-            'what2': {
-                key: '1',
-                itemName: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-        ]
 
         return (
             <View style={styles.container}>
@@ -121,6 +103,10 @@ export default class HomeScreen extends React.Component {
                             title={item.itemName}
                             subtitle={item.price}
                             avatar={{uri: item.pictureURL}}
+                            onPress={() => this.props.navigation.navigate(
+                                'ViewListing', 
+                                {listingInfo: item}
+                            )}
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
