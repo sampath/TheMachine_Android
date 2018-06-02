@@ -5,6 +5,7 @@ import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import PostListingScreen from '../screens/PostListingScreen';
 import ViewListingScreen from '../screens/ViewListingScreen';
+import ConfirmationScreen from '../screens/ConfirmationScreen';
 
 
 const RootStackNavigator = createStackNavigator(
@@ -17,6 +18,9 @@ const RootStackNavigator = createStackNavigator(
         },
         PostListing: {
             screen: PostListingScreen
+        },
+        Confirmation: {
+            screen: ConfirmationScreen
         },
         Login: {
             screen: LoginScreen

@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
                 
                 <ActionButton 
                     buttonColor={colorCodes.mintCustom}
-                    onPress={() => this.props.navigation.navigate('PostListing')}
+                    onPress={() => this.props.navigation.navigate('Confirmation')}
                     buttonTextStyle={{
                         color: 'black',
                     }}
