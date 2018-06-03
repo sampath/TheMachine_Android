@@ -30,6 +30,7 @@ export default class ViewListingScreen extends React.Component {
         this.state = {
             listingData: [],
             modalVisible: false,
+            test: 'fuck',
         };
     }
 
@@ -50,8 +51,17 @@ export default class ViewListingScreen extends React.Component {
         this.setState({modalVisible: visible});
     }
 
+    handleClickDelete(){
+        formBody = formBody.join("&");
+        fetch('https://flick-prod.herokuapp.com/listings/'+listingInfo.key, {
+            method: 'delete',
+        })
+        .done()
+    }
+
     render() {
         var interestedComponent;
+
         listingInfo = this.props.navigation.state.params.listingInfo;
 
         // if (user.Id === listingInfo.ownerId) {
@@ -60,6 +70,8 @@ export default class ViewListingScreen extends React.Component {
         } else {
             interestedComponent = <InterestedButton />;
         }
+
+
 
 
         return (
@@ -137,6 +149,15 @@ export default class ViewListingScreen extends React.Component {
                             {listingInfo.tags}
                         </Text>
 
+                        <ActionButton 
+                            buttonColor={colorCodes.mintCustom}
+                            position = "center"
+                            onPress={() => this.handleClickDelete()}
+                            buttonTextStyle={{
+                                color: 'black',
+                            }}
+                            renderIcon={() => <Icon type='ionicon' name='ios-trash-outline'/>}
+                        />
                         {interestedComponent}
                     </View>
 
@@ -310,6 +331,7 @@ class InterestedButton extends React.Component {
         );
     }
 }
+
 
 const styles = StyleSheet.create({
   container: {

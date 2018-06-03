@@ -21,7 +21,7 @@ export default class PostListingScreen extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {name: 'empty', price: '', descr: '', tags: ''}
+        this.state = {name: '', price: '', descr: '', tags: ''}
     }
 
     handleClick(){
@@ -90,10 +90,6 @@ export default class PostListingScreen extends React.Component {
                         placeholder='Tags'
                         onChangeText = {(tags) => this.setState({tags})}
                     />
-
-                    <Text style={{padding: 10, fontSize: 42}}>
-                        {this.state.name}
-                    </Text>
 
                     <View style={styles.postButton}>
                         <Button 
