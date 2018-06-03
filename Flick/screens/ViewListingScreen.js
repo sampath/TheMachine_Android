@@ -17,8 +17,11 @@ import {
     Button, 
     List,
     ListItem,
+    Overlay,
 } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
+
+var listingInfo;
 
 export default class ViewListingScreen extends React.Component {
     constructor(props) {
@@ -49,21 +52,28 @@ export default class ViewListingScreen extends React.Component {
 
     render() {
         var interestedComponent;
+        listingInfo = this.props.navigation.state.params.listingInfo;
+
         // if (user.Id === listingInfo.ownerId) {
         if (false) {
             interestedComponent = <InterestedList />;
         } else {
-            console.log("InterestedButton");
             interestedComponent = <InterestedButton />;
         }
 
-        let listingInfo = this.props.navigation.state.params.listingInfo;
-        console.log(listingInfo);
 
         return (
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     outerContainerStyles={styles.flickHeader}
+                    leftComponent={
+                        <Icon
+                            name='arrow-back'
+                            type='ionicons'
+                            color='#000'
+                            onPress={() => this.props.navigation.goBack(null)}
+                        />
+                    }
                     centerComponent={{ 
                         text: listingInfo.itemName, 
                         style: { 
@@ -123,40 +133,15 @@ export default class ViewListingScreen extends React.Component {
                         <Text h4 style={styles.titles}>
                             Tags:
                         </Text>
-                        <Text h5 style={[styles.subText, styles.marginBottom]}>
+                        <Text h5 style={[styles.subText,]}>
                             {listingInfo.tags}
                         </Text>
 
-
+                        {interestedComponent}
                     </View>
 
                 </View>
 
-                <Button onPress={() => this.setModalVisible(true)}/>
-
-                {interestedComponent}
-                
-                <Modal
-                    animationType="slide"
-                    transparent={false}
-                    presentationStyle='formSheet'
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        alert('Modal has been closed.');
-                }}>
-                    <View style={{marginTop: 22}}>
-                        <View>
-                            <Text>Hello World!</Text>
-
-                            <TouchableHighlight
-                                onPress={() => {
-                                  this.setModalVisible(!this.state.modalVisible);
-                            }}>
-                                <Text>Hide Modal</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                </Modal>
 
             </View>
         );
@@ -164,13 +149,144 @@ export default class ViewListingScreen extends React.Component {
 }
 
 class InterestedList extends React.Component {
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            transactions: '',
+            interestedUsers: [],
+        };
+    }
+
+    getInterestedUsers() {
+        fetch('https://flick-prod.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+            let dataObj = responseData
+
+            // Only handle data if there are any interested users
+            if (dataObj) {
+                let transactionData = Object.keys(dataObj).map(key => {
+                    let obj = dataObj[key];
+                    obj.key = key;
+                    return obj;
+                });
+
+                console.log(transactionData);
+
+                var users = []
+                var numTransactions = transactionData.length;
+
+                // For each relevant transaction, get the user info associated to it
+                for (var i = 0; i < numTransactions; i++) {
+                    var renterID = transactionData[i].renterID
+                    fetch('https://flick-prod.herokuapp.com/users/' + transactionData[i].renterID, {
+                        method: 'GET',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then((response) => response.json())
+                    .then((responseData) => {
+                        responseData.key = renterID;
+                        users.push(responseData);
+                    })
+                    .done();
+                }
+            }
+
+            var usersData = users.map((user) => {
+                return {value: user.value};
+            });
+
+            // Assign the found users to the interestedUsers state, which will generate the list
+            this.setState({
+                interestedUsers: usersData
+            });
+          
+            console.log(this.state.interestedUsers);
+
+        })
+        .done();
+    }
+
     componentDidMount() {
+        console.log("Mounted");
         this.getInterestedUsers();
     }
 
     render() {
+
+        const userListingData = [
+            {   
+                key: '1',
+                name: 'JBL Speaker',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '2',
+                name: 'Another Speaker',
+                price: '$10',
+                thumbnail: 'info',
+
+            },
+            {
+                key: '3',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '4',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '5',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '6',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+        ]
+
+        console.log("Rendered");
+        // console.log(userListingData);
+
+        var data = this.state.interestedUsers;
+
         return (
-            <Text>This is empty</Text>
+            <FlatList
+                data={this.state.interestedUsers}
+                renderItem={({item}) => (
+                    <ListItem
+                        roundAvatar
+                        title={item.name}
+                        subtitle={item.email}
+                        // leftAvatar={{ source: {uri: user.pictureURL} }}
+                        // onPress={() => this.props.navigation.navigate(
+                        //     'ViewListing', 
+                        //     {listingInfo: user}
+                        // )}
+                    />
+                )}
+                ItemSeparatorComponent={this.renderSeparator}
+            />
         );
     }
 }
@@ -178,7 +294,7 @@ class InterestedList extends React.Component {
 class InterestedButton extends React.Component {
 
     newTransaction(userId, ownerId, listingId) {
-
+        console.log("help me");
     }
 
     render() {
