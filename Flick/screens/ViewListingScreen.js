@@ -145,28 +145,6 @@ export default class ViewListingScreen extends React.Component {
                 <Button onPress={() => this.setModalVisible(true)}/>
 
                 {interestedComponent}
-                
-                <Modal
-                    animationType="slide"
-                    transparent={false}
-                    presentationStyle='formSheet'
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        alert('Modal has been closed.');
-                }}>
-                    <View style={{marginTop: 22}}>
-                        <View>
-                            <Text>Hello World!</Text>
-
-                            <TouchableHighlight
-                                onPress={() => {
-                                  this.setModalVisible(!this.state.modalVisible);
-                            }}>
-                                <Text>Hide Modal</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                </Modal>
 
             </View>
         );
@@ -196,13 +174,15 @@ class InterestedList extends React.Component {
         .then((responseData) => {
             let dataObj = responseData
 
-            let transactionIds = Object.keys(dataObj).map(key => {
+            let transactionData = Object.keys(dataObj).map(key => {
                 let obj = dataObj[key];
                 obj.key = key;
                 return obj;
             });
 
-            console.log(transactionIds);
+            console.log(transactionData);
+
+
 
             
         })
