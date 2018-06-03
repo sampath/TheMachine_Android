@@ -136,13 +136,9 @@ export default class ViewListingScreen extends React.Component {
                         <Text h5 style={[styles.subText,]}>
                             {listingInfo.tags}
                         </Text>
-
-                        {interestedComponent}
                     </View>
-
                 </View>
-
-
+                {interestedComponent}
             </View>
         );
   }
