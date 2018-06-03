@@ -55,7 +55,7 @@ export default class ViewListingScreen extends React.Component {
         listingInfo = this.props.navigation.state.params.listingInfo;
 
         // if (user.Id === listingInfo.ownerId) {
-        if (false) {
+        if (true) {
             interestedComponent = <InterestedList />;
         } else {
             interestedComponent = <InterestedButton />;
@@ -136,13 +136,9 @@ export default class ViewListingScreen extends React.Component {
                         <Text h5 style={[styles.subText,]}>
                             {listingInfo.tags}
                         </Text>
-
-                        {interestedComponent}
                     </View>
-
                 </View>
-
-
+                {interestedComponent}
             </View>
         );
   }
@@ -179,15 +175,17 @@ class InterestedList extends React.Component {
                     return obj;
                 });
 
-                console.log(transactionData);
+                // console.log(transactionData);
 
-                var users = []
+                var users = [];
                 var numTransactions = transactionData.length;
+                var renterIDs = new Array(numTransactions);
 
                 // For each relevant transaction, get the user info associated to it
                 for (var i = 0; i < numTransactions; i++) {
-                    var renterID = transactionData[i].renterID
-                    fetch('https://flick-prod.herokuapp.com/users/' + transactionData[i].renterID, {
+                    const index = i;
+                    var renterID = transactionData[index].renterID;
+                    fetch('https://flick-prod.herokuapp.com/users/' + transactionData[index].renterID, {
                         method: 'GET',
                         headers: {
                             Accept: 'application/json',
@@ -196,79 +194,31 @@ class InterestedList extends React.Component {
                     })
                     .then((response) => response.json())
                     .then((responseData) => {
-                        responseData.key = renterID;
+                        responseData.key = transactionData[index].renterID;
                         users.push(responseData);
                     })
                     .done();
                 }
             }
 
-            var usersData = users.map((user) => {
-                return {value: user.value};
-            });
-
             // Assign the found users to the interestedUsers state, which will generate the list
             this.setState({
-                interestedUsers: usersData
+                interestedUsers: users
             });
           
-            console.log(this.state.interestedUsers);
+            // console.log(this.state.interestedUsers);
 
         })
         .done();
     }
 
     componentDidMount() {
-        console.log("Mounted");
         this.getInterestedUsers();
     }
 
     render() {
 
-        const userListingData = [
-            {   
-                key: '1',
-                name: 'JBL Speaker',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '2',
-                name: 'Another Speaker',
-                price: '$10',
-                thumbnail: 'info',
-
-            },
-            {
-                key: '3',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '4',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '5',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '6',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-        ]
-
-        console.log("Rendered");
-        // console.log(userListingData);
-
-        var data = this.state.interestedUsers;
+        // console.log(this.state.interestedUsers);
 
         return (
             <FlatList
@@ -276,8 +226,8 @@ class InterestedList extends React.Component {
                 renderItem={({item}) => (
                     <ListItem
                         roundAvatar
-                        title={item.name}
-                        subtitle={item.email}
+                        title={'Name: ' + item.name}
+                        subtitle={'Email: ' + item.email}
                         // leftAvatar={{ source: {uri: user.pictureURL} }}
                         // onPress={() => this.props.navigation.navigate(
                         //     'ViewListing', 
