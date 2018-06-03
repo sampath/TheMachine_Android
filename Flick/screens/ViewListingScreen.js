@@ -17,8 +17,11 @@ import {
     Button, 
     List,
     ListItem,
+    Overlay,
 } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
+
+var listingInfo;
 
 export default class ViewListingScreen extends React.Component {
     constructor(props) {
@@ -49,16 +52,15 @@ export default class ViewListingScreen extends React.Component {
 
     render() {
         var interestedComponent;
+        listingInfo = this.props.navigation.state.params.listingInfo;
+
         // if (user.Id === listingInfo.ownerId) {
-        if (false) {
+        if (true) {
             interestedComponent = <InterestedList />;
         } else {
-            console.log("InterestedButton");
             interestedComponent = <InterestedButton />;
         }
 
-        let listingInfo = this.props.navigation.state.params.listingInfo;
-        console.log(listingInfo);
 
         return (
             <View style={styles.container}>
@@ -164,13 +166,63 @@ export default class ViewListingScreen extends React.Component {
 }
 
 class InterestedList extends React.Component {
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            transactions: '',
+            interestedUsers: [],
+        };
+    }
+
+    getInterestedUsers() {
+        fetch('https://flick-staging.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+            let dataObj = responseData
+
+            let transactionIds = Object.keys(dataObj).map(key => {
+                let obj = dataObj[key];
+                obj.key = key;
+                return obj;
+            });
+
+            console.log(transactionIds);
+
+            
+        })
+        .done();
+    }
+
     componentDidMount() {
         this.getInterestedUsers();
     }
 
     render() {
         return (
-            <Text>This is empty</Text>
+            <FlatList
+                data={this.state.listingData}
+                renderItem={({item}) => (
+                    <ListItem
+                        roundAvatar
+                        title={item.itemName}
+                        subtitle={item.price}
+                        leftAvatar={{ source: {uri: item.pictureURL} }}
+                        onPress={() => this.props.navigation.navigate(
+                            'ViewListing', 
+                            {listingInfo: item}
+                        )}
+                    />
+                )}
+                ItemSeparatorComponent={this.renderSeparator}
+            />
         );
     }
 }
