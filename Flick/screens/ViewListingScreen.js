@@ -133,18 +133,16 @@ export default class ViewListingScreen extends React.Component {
                         <Text h4 style={styles.titles}>
                             Tags:
                         </Text>
-                        <Text h5 style={[styles.subText, styles.marginBottom]}>
+                        <Text h5 style={[styles.subText,]}>
                             {listingInfo.tags}
                         </Text>
 
-
+                        {interestedComponent}
                     </View>
+
 
                 </View>
 
-                <Button onPress={() => this.setModalVisible(true)}/>
-
-                {interestedComponent}
 
             </View>
         );
@@ -163,7 +161,7 @@ class InterestedList extends React.Component {
     }
 
     getInterestedUsers() {
-        fetch('https://flick-staging.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
+        fetch('https://flick-prod.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -174,39 +172,118 @@ class InterestedList extends React.Component {
         .then((responseData) => {
             let dataObj = responseData
 
-            let transactionData = Object.keys(dataObj).map(key => {
-                let obj = dataObj[key];
-                obj.key = key;
-                return obj;
+            // Only handle data if there are any interested users
+            if (dataObj) {
+                let transactionData = Object.keys(dataObj).map(key => {
+                    let obj = dataObj[key];
+                    obj.key = key;
+                    return obj;
+                });
+
+                console.log(transactionData);
+
+                var users = []
+                var numTransactions = transactionData.length;
+
+                // For each relevant transaction, get the user info associated to it
+                for (var i = 0; i < numTransactions; i++) {
+                    var renterID = transactionData[i].renterID
+                    fetch('https://flick-prod.herokuapp.com/users/' + transactionData[i].renterID, {
+                        method: 'GET',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then((response) => response.json())
+                    .then((responseData) => {
+                        responseData.key = renterID;
+                        users.push(responseData);
+                    })
+                    .done();
+                }
+            }
+
+            var usersData = users.map((user) => {
+                return {value: user.value};
             });
 
-            console.log(transactionData);
+            // Assign the found users to the interestedUsers state, which will generate the list
+            this.setState({
+                interestedUsers: usersData
+            });
+          
+            console.log(this.state.interestedUsers);
 
-
-
-            
         })
         .done();
     }
 
     componentDidMount() {
+        console.log("Mounted");
         this.getInterestedUsers();
     }
 
     render() {
+
+        const userListingData = [
+            {   
+                key: '1',
+                name: 'JBL Speaker',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '2',
+                name: 'Another Speaker',
+                price: '$10',
+                thumbnail: 'info',
+
+            },
+            {
+                key: '3',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '4',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '5',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+            {
+                key: '6',
+                name: 'And Another one',
+                price: '$10',
+                thumbnail: 'info',
+            },
+        ]
+
+        console.log("Rendered");
+        // console.log(userListingData);
+
+        var data = this.state.interestedUsers;
+
         return (
             <FlatList
-                data={this.state.listingData}
+                data={this.state.interestedUsers}
                 renderItem={({item}) => (
                     <ListItem
                         roundAvatar
-                        title={item.itemName}
-                        subtitle={item.price}
-                        leftAvatar={{ source: {uri: item.pictureURL} }}
-                        onPress={() => this.props.navigation.navigate(
-                            'ViewListing', 
-                            {listingInfo: item}
-                        )}
+                        title={item.name}
+                        subtitle={item.email}
+                        // leftAvatar={{ source: {uri: user.pictureURL} }}
+                        // onPress={() => this.props.navigation.navigate(
+                        //     'ViewListing', 
+                        //     {listingInfo: user}
+                        // )}
                     />
                 )}
                 ItemSeparatorComponent={this.renderSeparator}
