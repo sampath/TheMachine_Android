@@ -43,7 +43,7 @@ export default class HomeScreen extends React.Component {
 
     // Uses GET request to query all listing data
     getAllListings() {
-        fetch('https://flick-staging.herokuapp.com/listings/', {
+        fetch('https://flick-prod.herokuapp.com/listings/', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -60,11 +60,12 @@ export default class HomeScreen extends React.Component {
                 return obj;
             });
 
-            console.log(dataArray);
 
             this.setState({
                 listingData: dataArray
             });
+
+            console.log(this.state.listingData);
         })
         .done();
     }
@@ -78,7 +79,8 @@ export default class HomeScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Header backgroundColor={colorCodes.mintCustom}>
+                <Header backgroundColor={colorCodes.mintCustom}
+                    outerContainerStyles={styles.flickHeader}>
                     <Icon name='filter-list'/>
                     <SearchBar style={styles.searchBar}
                         platform='android'
@@ -100,7 +102,7 @@ export default class HomeScreen extends React.Component {
                             roundAvatar
                             title={item.itemName}
                             subtitle={item.price}
-                            avatar={{uri: item.pictureURL}}
+                            leftAvatar={{ source: {uri: item.pictureURL} }}
                             onPress={() => this.props.navigation.navigate(
                                 'ViewListing', 
                                 {listingInfo: item}
@@ -122,11 +124,13 @@ export default class HomeScreen extends React.Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  flickHeader: {
+    height: 60,
   },
   searchBar: {
     width: '20%',
