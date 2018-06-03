@@ -60,12 +60,12 @@ export default class HomeScreen extends React.Component {
                 return obj;
             });
 
-            console.log(dataArray);
 
             this.setState({
                 listingData: dataArray
             });
 
+            console.log(this.state.listingData);
         })
         .done();
     }
