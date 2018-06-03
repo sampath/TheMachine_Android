@@ -55,7 +55,7 @@ export default class ViewListingScreen extends React.Component {
         listingInfo = this.props.navigation.state.params.listingInfo;
 
         // if (user.Id === listingInfo.ownerId) {
-        if (true) {
+        if (false) {
             interestedComponent = <InterestedList />;
         } else {
             interestedComponent = <InterestedButton />;
@@ -142,7 +142,7 @@ export default class ViewListingScreen extends React.Component {
 
                 </View>
 
-                <Button onPress={() => this.setModalVisible(true)}/>
+                
 
                 {interestedComponent}
 
@@ -218,7 +218,7 @@ class InterestedList extends React.Component {
 class InterestedButton extends React.Component {
 
     newTransaction(userId, ownerId, listingId) {
-
+        console.log("help me");
     }
 
     render() {
