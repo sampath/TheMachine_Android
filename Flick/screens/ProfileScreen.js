@@ -1,4 +1,7 @@
 import React from 'react';
+import { GoogleSignin } from 'react-native-google-signin';
+import firebase from 'react-native-firebase';
+
 import {
     Button,
     Image,
@@ -35,6 +38,9 @@ export default class HomeScreen extends React.Component {
 
     render() {
 
+        console.log('Profile');
+        console.log(firebase.auth().currentUser['_user']['displayName']);
+        console.log(global.user);
         const userListingData = [
             {   
                 key: '1',
@@ -92,7 +98,12 @@ export default class HomeScreen extends React.Component {
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
 
                 <View style={styles.userInfo}>
-                    <Avatar
+                    <Button 
+                        onPress={this.signOut.bind(this)}
+                        title='Logout'
+                    
+                    />
+                    <Avatar 
                         containerStyle={styles.profileImage}
                         size='xlarge'
                         rounded
@@ -113,7 +124,7 @@ export default class HomeScreen extends React.Component {
                         />
                     </View>
 
-                    <Text h3>Gary Gillespie</Text>
+                    <Text h3>{firebase.auth().currentUser['_user']['displayName']}</Text>
                 </View>
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
@@ -152,6 +163,30 @@ export default class HomeScreen extends React.Component {
             </View>
         );
   }
+
+
+  // Methods
+  signOut = ()=> {
+    global.data.signOut().then(()=> {
+        console.log('signed out');
+    }).catch((err) => {
+        console.error(err);
+    });
+  }
+
+  /*
+  signOut = async()=> {
+    await GoogleSignin.configure();
+
+    GoogleSignin.signOut().then(() => {
+        console.log('signed out');   
+    }).catch((err) => {
+        console.error(err);
+    });
+  }
+  */
+
+
 }
 
 const styles = StyleSheet.create({
