@@ -11,6 +11,9 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
+
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +31,11 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNGoogleSigninPackage(),
             new RNFirebasePackage(),
-            new VectorIconsPackage()
+            // new RNFirebasePackage(),
+            // new RNGoogleSigninPackage(),
+            new VectorIconsPackage(),
+            new RNFirebaseAuthPackage() // <-- Add this line
+
 
       );
     }
