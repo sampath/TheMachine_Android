@@ -43,7 +43,7 @@ export default class HomeScreen extends React.Component {
 
     // Uses GET request to query all listing data
     getAllListings() {
-        fetch('https://flick-staging.herokuapp.com/listings/', {
+        fetch('https://flick-prod.herokuapp.com/listings/', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
                 
                 <ActionButton 
                     buttonColor={colorCodes.mintCustom}
-                    onPress={() => this.props.navigation.navigate('Confirmation')}
+                    onPress={() => this.props.navigation.navigate('PostListing')}
                     buttonTextStyle={{
                         color: 'black',
                     }}

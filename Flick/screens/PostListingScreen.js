@@ -15,8 +15,40 @@ import {
     FormValidationMessage, 
     Input ,
 } from 'react-native-elements'
-
 export default class PostListingScreen extends React.Component {
+
+
+
+    constructor(props){
+        super(props);
+        this.state = {name: 'empty', price: '', descr: '', tags: ''}
+    }
+
+    handleClick(){
+        var data = {
+            'itemName': this.state.name,
+            'tags': this.state.tags,
+            'price': this.state.price,
+            'description': this.state.descr,
+            'endTime': '?'
+        };
+        var formBody = [];
+        for( var property in data){
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(data[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        fetch('https://flick-prod.herokuapp.com/test/listings/', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: formBody
+        })
+        .done()
+
+    }
 
     render() {
     
@@ -38,29 +70,38 @@ export default class PostListingScreen extends React.Component {
                     <Input 
                         containerStyle={styles.textInput}
                         placeholder='Item Name'
+                        onChangeText = {(name) => this.setState({name})}
                     />
 
                     <Input
                         containerStyle={styles.textInput} 
                         placeholder='Price'
+                        onChangeText = {(price) => this.setState({price})}
                     />
 
                     <Input
                         containerStyle={styles.textInput} 
                         placeholder='Description'
+                        onChangeText = {(descr) => this.setState({descr})}
                     />
 
                     <Input
                         containerStyle={styles.textInput} 
                         placeholder='Tags'
+                        onChangeText = {(tags) => this.setState({tags})}
                     />
-                    
+
+                    <Text style={{padding: 10, fontSize: 42}}>
+                        {this.state.name}
+                    </Text>
+
                     <View style={styles.postButton}>
                         <Button 
-                            title='Preview'
+                            title='Post'
                             titleStyle={{
                                 color:'black',
                             }}
+                            onPress={() => this.handleClick()}
                             buttonStyle={{
                                 backgroundColor: colorCodes.mintCustom,
                                 width: 370,
@@ -70,6 +111,8 @@ export default class PostListingScreen extends React.Component {
                 </View>
             </View>
         );
+
+        
   }
 }
 
