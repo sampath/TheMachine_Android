@@ -14,9 +14,10 @@ import './global.js'
 
 import MainTabNavigation from './navigation/MainTabNavigator';
 import RootNavigation from './navigation/RootNavigation';
+import LoginScreen from './screens/LoginScreen';
 
-//import firebase from 'react-native-firebase';
-//import { GoogleSignin } from 'react-native-google-signin';
+import firebase from 'react-native-firebase';
+import { GoogleSignin } from 'react-native-google-signin';
 
 type Props = {};
 
@@ -26,13 +27,44 @@ export default class App extends Component<Props> {
         super(props);
     
         this.state = {
-            user: true,
+            user: false,
             loading: true,
         };
     }
 
+
+    /**
+     * Listen for any authentication state changes in Firebase.
+     * Once subscribed, the 'user' parameter will either be null(logged out) or 
+     * object(logged in)
+     */
+    componentDidMount() {
+        //GoogleSignin.configure({}).then(()=> {
+        //});
+
+
+        console.log("Component Mounted");
+        this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+            this.setState({
+                loading: false,
+                user,
+            });
+        });
+    }
+
+    
+    /**
+     * Stop listening for authentication state changes when component unmounts
+     */
+    componentWillUnmount() {
+        this.authSubscription();
+    }
+
+
     render() {
 
+        console.log('this.state.user ' + this.state.user);
+        global.user = this.state.user;
         if (this.state.user) return <RootNavigation />;
 
         return <LoginScreen />;

@@ -73,11 +73,28 @@ export default class SettingsScreen extends React.Component {
 
     }).then(()=> {
 
+        /*
         GoogleSignin.signIn().then((user)=> {
             alert(user);
         }).catch((err) => {
             alert(err);
         }).done();
+        */
+
+        GoogleSignin.signIn().then((data) => {
+            // Create firebase creds with token
+            const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
+            console.log('Credential: ', credential);
+            // Login wiith credential
+            return firebase.auth().signInAndRetrieveDataWithCredential(credential);
+        }).then((user)=> {
+            // If you need to do anything with the user, do it here
+            // The user will be logged in automatically by the
+            // `onAuthStateChanged` listener we set up in App.js earlier
+        }).catch((error)=> {
+            const { code, message} = error;
+
+        });
 
     });
     /*
