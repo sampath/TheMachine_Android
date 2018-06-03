@@ -66,6 +66,14 @@ export default class ViewListingScreen extends React.Component {
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     outerContainerStyles={styles.flickHeader}
+                    leftComponent={
+                        <Icon
+                            name='arrow-back'
+                            type='ionicons'
+                            color='#000'
+                            onPress={() => this.props.navigation.goBack(null)}
+                        />
+                    }
                     centerComponent={{ 
                         text: listingInfo.itemName, 
                         style: { 
