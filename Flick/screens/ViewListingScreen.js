@@ -175,7 +175,7 @@ class InterestedList extends React.Component {
                     return obj;
                 });
 
-                console.log(transactionData);
+                // console.log(transactionData);
 
                 var users = [];
                 var numTransactions = transactionData.length;
@@ -206,7 +206,7 @@ class InterestedList extends React.Component {
                 interestedUsers: users
             });
           
-            console.log(this.state.interestedUsers);
+            // console.log(this.state.interestedUsers);
 
         })
         .done();
@@ -218,7 +218,7 @@ class InterestedList extends React.Component {
 
     render() {
 
-        var data = this.state.interestedUsers;
+        // console.log(this.state.interestedUsers);
 
         return (
             <FlatList
