@@ -167,26 +167,9 @@ export default class HomeScreen extends React.Component {
 
   // Methods
   signOut = () => {
-    global.data.signOut().then(()=> {
-        console.log('signed out');
-    }).catch((err) => {
-        console.error(err);
-    });
+    firebase.auth().signOut();
+    global.user = {};
   }
-
-  /*
-  signOut = async()=> {
-    await GoogleSignin.configure();
-
-    GoogleSignin.signOut().then(() => {
-        console.log('signed out');   
-    }).catch((err) => {
-        console.error(err);
-    });
-  }
-  */
-
-
 }
 
 const styles = StyleSheet.create({
