@@ -43,6 +43,15 @@ export default class App extends Component<Props> {
         //});
 
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+
+            if( user != null ) {
+                GoogleSignin.signOut().then(()=> {
+                    console.log('Logged Out');
+                }).catch((err) => {
+                    
+                });
+            }
+
             this.setState({
                 loading: false,
                 user,
