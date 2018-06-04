@@ -38,9 +38,9 @@ export default class HomeScreen extends React.Component {
 
     render() {
 
-        console.log('Profile');
-        console.log(firebase.auth().currentUser['_user']['displayName']);
-        console.log(global.user);
+        // console.log('Profile');
+        // console.log(firebase.auth().currentUser['_user']['displayName']);
+        // console.log(global.user);
         const userListingData = [
             {   
                 key: '1',
@@ -107,7 +107,7 @@ export default class HomeScreen extends React.Component {
                         containerStyle={styles.profileImage}
                         size='xlarge'
                         rounded
-                        source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+                        source={{uri: global.user._user.photoURL}}
                     />
                     <View style={styles.userRating}>
                         <Text h5>Renter Rating:</Text>
@@ -166,7 +166,7 @@ export default class HomeScreen extends React.Component {
 
 
   // Methods
-  signOut = ()=> {
+  signOut = () => {
     global.data.signOut().then(()=> {
         console.log('signed out');
     }).catch((err) => {

@@ -33,19 +33,6 @@ export default class ViewListingScreen extends React.Component {
         };
     }
 
-    renderSeparator() {
-        return (
-            <View
-                style={{
-                    height: 1,
-                    width: "86%",
-                    backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
-                }}
-            />
-        );
-    };
-
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
     }
@@ -154,6 +141,19 @@ class InterestedList extends React.Component {
         };
     }
 
+    renderSeparator() {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: "86%",
+                    backgroundColor: "#CED0CE",
+                    marginLeft: "14%"
+                }}
+            />
+        );
+    };
+
     getInterestedUsers() {
         fetch('https://flick-prod.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
             method: 'GET',
@@ -241,7 +241,6 @@ class InterestedButton extends React.Component {
 
     showInterest(userId, ownerId, listingId) {
 
-        console.log(listingInfo.key);
         var transactionData = {
             listingID: listingInfo.key,
             ownerID: listingInfo.ownerID,

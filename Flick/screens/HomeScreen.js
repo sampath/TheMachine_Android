@@ -23,7 +23,8 @@ export default class HomeScreen extends React.Component {
         super(props);
     
         this.state = {
-            listingData: []
+            listingData: [],
+            refreshing: false,
         };
     }
 
@@ -40,6 +41,13 @@ export default class HomeScreen extends React.Component {
             />
         );
     };
+
+    handleRefresh() {
+        this.setState({
+            refreshing: true,
+        });
+        getAllListings();
+    }
 
     // Uses GET request to query all listing data
     getAllListings() {
@@ -62,10 +70,11 @@ export default class HomeScreen extends React.Component {
 
 
             this.setState({
-                listingData: dataArray
+                listingData: dataArray,
+                refreshing: false,
             });
 
-            console.log(this.state.listingData);
+            // console.log(this.state.listingData);
         })
         .done();
     }
@@ -109,9 +118,12 @@ export default class HomeScreen extends React.Component {
                                 'ViewListing', 
                                 {listingInfo: item}
                             )}
+
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefresh}
                 />
                 
                 <ActionButton 
