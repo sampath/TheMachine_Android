@@ -62,9 +62,9 @@ export default class HomeScreen extends React.Component {
         .then((response) => {
             let dataObj = response
 
+            // Only handle data if there are any listings
             if (dataObj) {
-                // console.log(dataObj);
-
+                // Assign listingIDs as keys for obects
                 let dataArray = Object.keys(dataObj).map(key => {
                     let obj = dataObj[key];
                     obj.key = key;
@@ -75,8 +75,6 @@ export default class HomeScreen extends React.Component {
                     listingData: dataArray,
                     refreshing: false,
                 });
-
-                // console.log(this.state.listingData);
             }
         })
         .done();
@@ -88,7 +86,7 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-
+        console.log(this.state.listingData);
         return (
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
