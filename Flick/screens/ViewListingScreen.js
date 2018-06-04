@@ -34,24 +34,27 @@ export default class ViewListingScreen extends React.Component {
     }
 
     checkIfInterested() {
-        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingInfo.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((response) => {
+        // fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingInfo.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
+        //     method: 'GET',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        // })
+        // .then((response) => response.json())
+        // .then((response) => {
 
-            console.log(response);
-            this.setState({
-                isInterested: response
-            });
+        //     console.log(response);
+        //     this.setState({
+        //         isInterested: response
+        //     });
 
-            // console.log(this.state.listingData);
-        })
-        .done();
+        //     // console.log(this.state.listingData);
+        // })
+        // .done();
+        this.setState({
+            isInterested: false
+        });
     }
 
     componentDidMount() {
@@ -196,8 +199,6 @@ class InterestedList extends React.Component {
                     return obj;
                 });
 
-                // console.log(transactionData);
-
                 var users = [];
                 var numTransactions = transactionData.length;
 
@@ -261,7 +262,7 @@ class InterestedList extends React.Component {
 
 class InterestedButton extends React.Component {
 
-    showInterest(userId, ownerId, listingId) {
+    showInterest() {
 
         var transactionData = {
             listingID: listingInfo.key,
@@ -277,7 +278,7 @@ class InterestedButton extends React.Component {
         }
         formBody = formBody.join("&");
 
-        fetch('https://flick-prod.herokuapp.com/transactions/', {
+        fetch('https://flick-prod.herokuapp.com/renterinterested/', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
