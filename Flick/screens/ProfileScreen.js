@@ -88,21 +88,27 @@ export default class HomeScreen extends React.Component {
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     centerComponent={{ 
-                        text:'Profile', 
+                        text:global.user._user.displayName, 
                         style: { 
-                            color: '#000' 
+                            color: '#000',
+                            marginRight: 0,
                         } 
                     }}
+                    rightComponent={
+                        <Button 
+                            onPress={this.signOut.bind(this)}
+                            title='Logout'
+                            style={{
+                                marginLeft: 0,
+                            }}
+                        />
+                    }
+                    
                 />
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
 
                 <View style={styles.userInfo}>
-                    <Button 
-                        onPress={this.signOut.bind(this)}
-                        title='Logout'
-                    
-                    />
                     <Avatar 
                         containerStyle={styles.profileImage}
                         size='xlarge'
@@ -124,7 +130,7 @@ export default class HomeScreen extends React.Component {
                         />
                     </View>
 
-                    <Text h3>{firebase.auth().currentUser['_user']['displayName']}</Text>
+                    {/*<Text h3>{global.user._user.displayName}</Text>*/}
                 </View>
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />

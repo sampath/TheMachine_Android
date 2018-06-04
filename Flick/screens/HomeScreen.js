@@ -59,8 +59,8 @@ export default class HomeScreen extends React.Component {
             },
         })
         .then((response) => response.json())
-        .then((responseData) => {
-            let dataObj = responseData
+        .then((response) => {
+            let dataObj = response
 
             let dataArray = Object.keys(dataObj).map(key => {
                 let obj = dataObj[key];
@@ -85,8 +85,6 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-
-        console.log(global.user);
 
         return (
             <View style={styles.container}>

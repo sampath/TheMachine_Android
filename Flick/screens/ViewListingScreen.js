@@ -29,12 +29,7 @@ export default class ViewListingScreen extends React.Component {
     
         this.state = {
             listingData: [],
-            modalVisible: false,
         };
-    }
-
-    setModalVisible(visible) {
-        this.setState({modalVisible: visible});
     }
 
     render() {
@@ -163,8 +158,9 @@ class InterestedList extends React.Component {
             }
         })
         .then((response) => response.json())
-        .then((responseData) => {
-            let dataObj = responseData
+        .then((response) => {
+
+            let dataObj = response
 
             // Only handle data if there are any interested users
             if (dataObj) {
@@ -183,7 +179,7 @@ class InterestedList extends React.Component {
                 for (var i = 0; i < numTransactions; i++) {
                     const index = i;
                     var renterID = transactionData[index].renterID;
-                    fetch('https://flick-prod.herokuapp.com/users/' + transactionData[index].renterID, {
+                    fetch('https://flick-prod.herokuapp.com/users/' + renterID, {
                         method: 'GET',
                         headers: {
                             Accept: 'application/json',
@@ -191,9 +187,9 @@ class InterestedList extends React.Component {
                         },
                     })
                     .then((response) => response.json())
-                    .then((responseData) => {
-                        responseData.key = transactionData[index].renterID;
-                        users.push(responseData);
+                    .then((response) => {
+                        response.key = renterID;
+                        users.push(response);
                     })
                     .done();
                 }

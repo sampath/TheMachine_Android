@@ -19,14 +19,13 @@ import {
 } from 'react-native-elements'
 export default class PostListingScreen extends React.Component {
 
-
-
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {name: '', price: '', descr: '', tags: '', imageSource: null};
     }
 
-    handlePost(){
+    // Extracts data from form and creates a listing on the database
+    handlePost() {
         var data = {
             'ownerID': global.user._user.uid,
             'itemName': this.state.name,
@@ -54,7 +53,7 @@ export default class PostListingScreen extends React.Component {
         .done()
     }
 
-    handleImagePick(){
+    handleImagePick() {
         const options = {
             quality: 1.0,
             maxWidth: 200,
@@ -95,7 +94,6 @@ export default class PostListingScreen extends React.Component {
     }
 
     render() {
-    
         return (
             <View style={styles.container}>
             
