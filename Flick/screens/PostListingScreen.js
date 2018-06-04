@@ -1,4 +1,5 @@
 import React from 'react';
+import ImagePicker from 'react-native-image-picker';
 import { 
     Image, 
     Platform, 
@@ -21,16 +22,18 @@ export default class PostListingScreen extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {name: '', price: '', descr: '', tags: ''}
+        this.state = {name: '', price: '', descr: '', tags: '', imageSource: null};
     }
 
-    handleClick(){
+    handlePost(){
         var data = {
             'itemName': this.state.name,
             'tags': this.state.tags,
             'price': this.state.price,
             'description': this.state.descr,
-            'endTime': '?'
+            'endTime': '?',
+            'pictureURL': this.state.imageSource,
+            'OwnerId': global.user._user.uid
         };
         var formBody = [];
         for( var property in data){
@@ -47,8 +50,9 @@ export default class PostListingScreen extends React.Component {
             body: formBody
         })
         .done()
-
     }
+
+    handleImagePick()
 
     render() {
     
@@ -97,7 +101,7 @@ export default class PostListingScreen extends React.Component {
                             titleStyle={{
                                 color:'black',
                             }}
-                            onPress={() => this.handleClick()}
+                            onPress={() => this.handlePost()}
                             buttonStyle={{
                                 backgroundColor: colorCodes.mintCustom,
                                 width: 370,
