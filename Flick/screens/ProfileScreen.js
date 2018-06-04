@@ -38,6 +38,8 @@ export default class HomeScreen extends React.Component {
 
     render() {
 
+        console.log(firebase.auth().currentUser);
+
         // console.log('Profile');
         // console.log(firebase.auth().currentUser['_user']['displayName']);
         // console.log(global.user);
@@ -167,8 +169,11 @@ export default class HomeScreen extends React.Component {
 
   // Methods
   signOut = () => {
-    firebase.auth().signOut();
-    global.user = {};
+    firebase.auth().signOut().then(()=> {
+        console.log('Firebase Signed Out');
+    }).catch((err) => {
+        console.error(err);
+    });
   }
 }
 

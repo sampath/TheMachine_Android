@@ -9,6 +9,7 @@ import { Icon } from 'react-native-elements';
 import ProfileScreen from '../screens/ProfileScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import AlertsScreen from '../screens/AlertsScreen';
 
 
 export default createBottomTabNavigator(
@@ -27,6 +28,13 @@ export default createBottomTabNavigator(
                 tabBarIcon: ({tintColor}) => <Icon name='accessibility' color={tintColor} />
             },
         },
+        Alerts: {
+            screen: AlertsScreen,
+            navigationOptions: {
+                label: '',
+                tabBarIcon: ({tintColor}) => <Icon name='notifications-active' color={tintColor} />
+            }
+        }
     },
     {
         initialRouteName: 'Home',
