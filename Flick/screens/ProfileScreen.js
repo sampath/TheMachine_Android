@@ -136,8 +136,6 @@ export default class HomeScreen extends React.Component {
                             readonly
                         />
                     </View>
-
-                    {/*<Text h3>{global.user._user.displayName}</Text>*/}
                 </View>
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />

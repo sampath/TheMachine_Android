@@ -49,10 +49,10 @@ export default class LoginScreen extends React.Component {
             // login with credential
             const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
 
-            /*
+            
             console.log("Checking if user exists");
             // Check if the user exists in the database
-            fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
+            fetch('https://flick-staging.herokuapp.com/users/' + global.user._user.uid, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -63,22 +63,23 @@ export default class LoginScreen extends React.Component {
             .then((response) => {
 
                 console.log("made it here");
-
-                this.setState({
-                    userExists: response
-                });
+                console.log(response);
+                
+                var userExists = response
 
                 console.log("got user info");
                 // If the user doesn't exist in the database, add them
-                if (!this.state.userExists) {
+                if (userExists.error) {
 
                     console.log("Creating new user");
-                    var phoneNumber = (global.user.user_.phoneNumber)  ? global.user.user_.phoneNumber : 'no number'
+
+                    console.log(global.user);
+
                     var formData = {
                         userID: global.user._user.uid,
                         name: global.user._user.displayName,
                         email: global.user._user.email,
-                        phoneNumber: phoneNumber,
+                        phoneNumber: 'phoneNumber'
                     }
 
                     var formBody = [];
@@ -89,11 +90,12 @@ export default class LoginScreen extends React.Component {
                     }
                     formBody = formBody.join("&");
 
-                    fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
+                    console.log("FB", formBody)
+
+                    fetch('https://flick-staging.herokuapp.com/users/', {
                         method: 'POST',
                         headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json',
+                            'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
                         },
                         body: formBody
                     })
@@ -101,7 +103,7 @@ export default class LoginScreen extends React.Component {
                 }
             })
             .done();
-            */
+            
 
         } catch(e) {
             console.error(e);
