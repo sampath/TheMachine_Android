@@ -1,6 +1,7 @@
 import React from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { 
+    Alert,
     Image, 
     Platform, 
     StyleSheet, 
@@ -26,33 +27,47 @@ export default class PostListingScreen extends React.Component {
 
     // Extracts data from form and creates a listing on the database
     handlePost() {
-        var data = {
-            'ownerID': global.user._user.uid,
-            'itemName': this.state.name,
-            'tags': this.state.tags,
-            'price': this.state.price,
-            'description': this.state.descr,
-            'picturePath': this.state.imageData,
-        };
-        console.log(this.state.imageData)
+        var valid = this.validateInput()
+        console.log(valid)
+        if(valid){
+            var data = {
+                'ownerID': global.user._user.uid,
+                'itemName': this.state.name,
+                'tags': this.state.tags,
+                'price': this.state.price,
+                'description': this.state.descr,
+                'picturePath': this.state.imageData,
+            };
 
-        var formBody = [];
-        for( var property in data){
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(data[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
-        fetch('https://flick-prod.herokuapp.com/test/listings/', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
-            },
-            body: formBody
-        })
-        .done()
+            var formBody = [];
+            for( var property in data){
+                var encodedKey = encodeURIComponent(property);
+                var encodedValue = encodeURIComponent(data[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+            fetch('https://flick-prod.herokuapp.com/test/listings/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBody
+            })
+            .done()
+            this.props.navigation.goBack(null)
+
+        }else{Alert.alert('Invalid Input')}
     }
 
+    validateInput(){
+        if(isNaN(this.state.price) | this.state.price=='' ){return false;}
+        if(this.state.imageUri == null){return false;}
+        if(this.state.itemName == ''){return false;}
+        if(this.state.tags == ''){return false;}
+        if(this.state.descr==''){return false;}
+        return true;
+
+    }
     handleImagePick() {
         const options = {
             quality: 1.0,
@@ -85,7 +100,6 @@ export default class PostListingScreen extends React.Component {
                 imageData: source,
                 imageUri: {uri: response.uri}
               });
-            console.log(this.state.imageData)
             console.log(this.state.imageUri)
 
             }
@@ -148,7 +162,7 @@ export default class PostListingScreen extends React.Component {
                             titleStyle={{
                                 color:'black',
                             }}
-                            onPress={() => this.handlePost()}
+                            onPress={() => {this.handlePost()}}
                             buttonStyle={{
                                 backgroundColor: colorCodes.mintCustom,
                                 width: 370,
