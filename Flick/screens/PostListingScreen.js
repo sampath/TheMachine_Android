@@ -26,6 +26,7 @@ export default class PostListingScreen extends React.Component {
 
     handleClick(){
         var data = {
+            'ownerID': global.user._user.uid,
             'itemName': this.state.name,
             'tags': this.state.tags,
             'price': this.state.price,
@@ -90,10 +91,6 @@ export default class PostListingScreen extends React.Component {
                         placeholder='Tags'
                         onChangeText = {(tags) => this.setState({tags})}
                     />
-
-                    <Text style={{padding: 10, fontSize: 42}}>
-                        {this.state.name}
-                    </Text>
 
                     <View style={styles.postButton}>
                         <Button 
