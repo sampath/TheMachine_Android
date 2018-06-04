@@ -26,6 +26,8 @@ export default class HomeScreen extends React.Component {
             listingData: [],
             refreshing: false,
         };
+
+        this.getAllListings = this.getAllListings.bind(this);
     }
 
     // A simple separator to separate listings in the view
@@ -43,10 +45,10 @@ export default class HomeScreen extends React.Component {
     };
 
     handleRefresh() {
-        this.setState({
-            refreshing: true
-        });
-        getAllListings();
+        // this.setState({
+        //     refreshing: true
+        // });
+        this.getAllListings();
     }
 
     // Uses GET request to query all listing data
@@ -117,6 +119,7 @@ export default class HomeScreen extends React.Component {
                                 'ViewListing', 
                                 {listingInfo: item}
                             )}
+
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
