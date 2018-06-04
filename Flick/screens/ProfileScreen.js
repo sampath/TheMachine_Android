@@ -22,18 +22,59 @@ import {
     ListItem,
 } from 'react-native-elements'
 
-export default class HomeScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
     
         this.state = {
-            selectedIndex: 0
+            listingData: [],
+            selectedIndex: 0,
         }
-        this.updateIndex = this.updateIndex.bind(this)
+        this.updateIndex = this.updateIndex.bind(this);
+    }
+
+    // Uses GET request to query all listing data
+    getUserListings() {
+        fetch('https://flick-staging.herokuapp.com/transactions/user/' + '30K4PU1TEvQn2AxnJ8J6uyidlUT2' + '/', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+
+            let dataObj = response
+
+            if (dataObj) {
+                // console.log(dataObj);
+
+                let dataArray = Object.keys(dataObj).map(key => {
+                    let obj = dataObj[key];
+                    obj.key = key;
+                    return obj;
+                });
+
+                this.setState({
+                    listingData: dataArray,
+                });
+
+                // console.log(this.state.listingData);
+            }
+        })
+    }
+
+    componentDidMount() {
+        this.getUserListings();
     }
 
     updateIndex(selectedIndex) {
-        this.setState({selectedIndex})
+        console.log(selectedIndex);
+        this.setState({selectedIndex});
+
+        this.getUserListings();
     }
 
     // Methods
@@ -48,46 +89,6 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-        const userListingData = [
-            {   
-                key: '1',
-                name: 'JBL Speaker',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '2',
-                name: 'Another Speaker',
-                price: '$10',
-                thumbnail: 'info',
-
-            },
-            {
-                key: '3',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '4',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '5',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-            {
-                key: '6',
-                name: 'And Another one',
-                price: '$10',
-                thumbnail: 'info',
-            },
-        ]
-
         const buttons = ['Active', 'Past']
         const { selectedIndex } = this.state
     
@@ -157,15 +158,18 @@ export default class HomeScreen extends React.Component {
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
 
                 <FlatList
-                    data={userListingData}
+                    data={this.state.listingData}
                     renderItem={({item}) => (
                         <ListItem
                             roundAvatar
-                            title={item.name}
+                            title={item.itemName}
                             subtitle={item.price}
-                            leftIcon={{ 
-                                name: item.thumbnail
-                            }}
+                            leftAvatar={{ source: {uri: item.pictureURL} }}
+                            onPress={() => this.props.navigation.navigate(
+                                'ViewListing', 
+                                {listingInfo: item}
+                            )}
+
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
