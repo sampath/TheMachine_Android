@@ -38,7 +38,7 @@ export default class LoginScreen extends React.Component {
     // Methods
     onloginOrRegister = async () => {
         try {
-            await GoogleSignin.configure();
+            // await GoogleSignin.configure();
             const data = await GoogleSignin.signIn();
             console.log(data);
 

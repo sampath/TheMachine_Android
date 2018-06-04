@@ -39,6 +39,7 @@ export default class App extends Component<Props> {
      * object(logged in)
      */
     componentDidMount() {
+        GoogleSignin.configure();
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
             this.setState({
                 loading: false,
