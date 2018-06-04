@@ -15,6 +15,13 @@ import { GoogleSignin } from 'react-native-google-signin';
 
 export default class LoginScreen extends React.Component {
 
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            userExists: null
+        };
+    }
 
     render() {
         return (
@@ -28,57 +35,78 @@ export default class LoginScreen extends React.Component {
         );
   }
 
-   // Methods
+    // Methods
     onloginOrRegister = async () => {
-
         try {
-            await GoogleSignin.configure();
             const data = await GoogleSignin.signIn();
             console.log(data);
 
             global.user = data;
 
-            // Create firebase credneeital with token
+            // Create firebase credential with token
             const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
+
             // login with credential
             const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
-            console.info(JSON.stringify(currentUser.toJSON));
+
+            /*
+            console.log("Checking if user exists");
+            // Check if the user exists in the database
+            fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            })
+            .then((response) => response.json())
+            .then((response) => {
+
+                console.log("made it here");
+
+                this.setState({
+                    userExists: response
+                });
+
+                console.log("got user info");
+                // If the user doesn't exist in the database, add them
+                if (!this.state.userExists) {
+
+                    console.log("Creating new user");
+                    var phoneNumber = (global.user.user_.phoneNumber)  ? global.user.user_.phoneNumber : 'no number'
+                    var formData = {
+                        userID: global.user._user.uid,
+                        name: global.user._user.displayName,
+                        email: global.user._user.email,
+                        phoneNumber: phoneNumber,
+                    }
+
+                    var formBody = [];
+                    for ( var property in formData) {
+                        var encodedKey = encodeURIComponent(property);
+                        var encodedValue = encodeURIComponent(formData[property]);
+                        formBody.push(encodedKey + "=" + encodedValue);
+                    }
+                    formBody = formBody.join("&");
+
+                    fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: formBody
+                    })
+                    .done();                
+                }
+            })
+            .done();
+            */
+
         } catch(e) {
             console.error(e);
         }
-        
-        //GoogleSignin.configure({}).then(()=> {
 
-            /*
-            GoogleSignin.signIn().then((user)=> {
-                alert(user);
-            }).catch((err) => {
-                alert(err);
-            }).done();
-            */
-        console.log("login called");
-        
-        /*
-        GoogleSignin.signIn().then((data) => {
-            // Create firebase creds with token
-            console.log("wtf");
-            console.log(data);
-            const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
-            console.log('Credential: ' + credential);
-            // Login wiith credential
-            return firebase.auth().signInAndRetrieveDataWithCredential(credential);
-        }).then((user)=> {
-            console.log(user);
-            // If you need to do anything with the user, do it here
-            // The user will be logged in automatically by the
-            // `onAuthStateChanged` listener we set up in App.js earlier
-        }).catch((error)=> {
-            const { code, message} = error;
-
-        }).done();
-        */
-
-        //});
     }
 }
 

@@ -29,25 +29,33 @@ export default class ViewListingScreen extends React.Component {
     
         this.state = {
             listingData: [],
-            modalVisible: false,
+            isInterested: false,
         };
     }
 
-    renderSeparator() {
-        return (
-            <View
-                style={{
-                    height: 1,
-                    width: "86%",
-                    backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
-                }}
-            />
-        );
-    };
+    checkIfInterested() {
+        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingInfo.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
 
-    setModalVisible(visible) {
-        this.setState({modalVisible: visible});
+            console.log(response);
+            this.setState({
+                isInterested: response
+            });
+
+            // console.log(this.state.listingData);
+        })
+        .done();
+    }
+
+    componentDidMount() {
+        this.checkIfInterested();
     }
 
     render() {
@@ -56,7 +64,7 @@ export default class ViewListingScreen extends React.Component {
 
         if (global.user._user.uid === listingInfo.ownerID) {
             interestedComponent = <InterestedList />;
-        } else {
+        } else if (!this.state.isInterested) {
             interestedComponent = <InterestedButton />;
         }
 
@@ -154,6 +162,19 @@ class InterestedList extends React.Component {
         };
     }
 
+    renderSeparator() {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: "86%",
+                    backgroundColor: "#CED0CE",
+                    marginLeft: "14%"
+                }}
+            />
+        );
+    };
+
     getInterestedUsers() {
         fetch('https://flick-prod.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
             method: 'GET',
@@ -163,8 +184,9 @@ class InterestedList extends React.Component {
             }
         })
         .then((response) => response.json())
-        .then((responseData) => {
-            let dataObj = responseData
+        .then((response) => {
+
+            let dataObj = response
 
             // Only handle data if there are any interested users
             if (dataObj) {
@@ -183,7 +205,7 @@ class InterestedList extends React.Component {
                 for (var i = 0; i < numTransactions; i++) {
                     const index = i;
                     var renterID = transactionData[index].renterID;
-                    fetch('https://flick-prod.herokuapp.com/users/' + transactionData[index].renterID, {
+                    fetch('https://flick-prod.herokuapp.com/users/' + renterID, {
                         method: 'GET',
                         headers: {
                             Accept: 'application/json',
@@ -191,9 +213,9 @@ class InterestedList extends React.Component {
                         },
                     })
                     .then((response) => response.json())
-                    .then((responseData) => {
-                        responseData.key = transactionData[index].renterID;
-                        users.push(responseData);
+                    .then((response) => {
+                        response.key = renterID;
+                        users.push(response);
                     })
                     .done();
                 }
@@ -241,7 +263,6 @@ class InterestedButton extends React.Component {
 
     showInterest(userId, ownerId, listingId) {
 
-        console.log(listingInfo.key);
         var transactionData = {
             listingID: listingInfo.key,
             ownerID: listingInfo.ownerID,

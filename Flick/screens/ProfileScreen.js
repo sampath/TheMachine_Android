@@ -32,15 +32,22 @@ export default class HomeScreen extends React.Component {
         this.updateIndex = this.updateIndex.bind(this)
     }
 
-    updateIndex (selectedIndex) {
+    updateIndex(selectedIndex) {
         this.setState({selectedIndex})
     }
 
-    render() {
+    // Methods
+    async signOut() {
+            firebase.auth().signOut()
+            .then(() => {
+                console.log("Logged out of firebase");
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+    }
 
-        console.log('Profile');
-        console.log(firebase.auth().currentUser['_user']['displayName']);
-        console.log(global.user);
+    render() {
         const userListingData = [
             {   
                 key: '1',
@@ -88,26 +95,32 @@ export default class HomeScreen extends React.Component {
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     centerComponent={{ 
-                        text:'Profile', 
+                        text: global.user._user.displayName, 
                         style: { 
-                            color: '#000' 
+                            color: '#000',
+                            marginRight: 0,
                         } 
                     }}
+                    rightComponent={
+                        <Button 
+                            onPress={this.signOut.bind(this)}
+                            title='Logout'
+                            style={{
+                                marginLeft: 0,
+                            }}
+                        />
+                    }
+                    
                 />
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
 
                 <View style={styles.userInfo}>
-                    <Button 
-                        onPress={this.signOut.bind(this)}
-                        title='Logout'
-                    
-                    />
                     <Avatar 
                         containerStyle={styles.profileImage}
                         size='xlarge'
                         rounded
-                        source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+                        source={{uri: global.user._user.photoURL}}
                     />
                     <View style={styles.userRating}>
                         <Text h5>Renter Rating:</Text>
@@ -124,7 +137,7 @@ export default class HomeScreen extends React.Component {
                         />
                     </View>
 
-                    <Text h3>{firebase.auth().currentUser['_user']['displayName']}</Text>
+                    {/*<Text h3>{global.user._user.displayName}</Text>*/}
                 </View>
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
@@ -162,30 +175,7 @@ export default class HomeScreen extends React.Component {
 
             </View>
         );
-  }
-
-
-  // Methods
-  signOut = ()=> {
-    global.data.signOut().then(()=> {
-        console.log('signed out');
-    }).catch((err) => {
-        console.error(err);
-    });
-  }
-
-  /*
-  signOut = async()=> {
-    await GoogleSignin.configure();
-
-    GoogleSignin.signOut().then(() => {
-        console.log('signed out');   
-    }).catch((err) => {
-        console.error(err);
-    });
-  }
-  */
-
+    }
 
 }
 

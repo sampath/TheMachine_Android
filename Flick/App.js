@@ -69,8 +69,10 @@ export default class App extends Component<Props> {
 
     render() {
 
-        console.log('this.state.user ' + this.state.user);
+
+        console.log(this.state.user);
         global.user = this.state.user;
+
         if (this.state.user) return <RootNavigation />;
 
         return <LoginScreen />;
