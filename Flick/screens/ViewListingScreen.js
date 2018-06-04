@@ -8,6 +8,7 @@ import {
     TouchableHighlight,
     View,
     Modal,
+    Alert,
 } from 'react-native';
 import { 
     Header,
@@ -148,7 +149,9 @@ export default class ViewListingScreen extends React.Component {
                         </Text>
                     </View>
                 </View>
+
                 {interestedComponent}
+
             </View>
         );
   }
@@ -165,6 +168,7 @@ class InterestedList extends React.Component {
         };
     }
 
+    // A simple separator to separate listings in the view
     renderSeparator() {
         return (
             <View
@@ -193,6 +197,7 @@ class InterestedList extends React.Component {
 
             // Only handle data if there are any interested users
             if (dataObj) {
+                // Assign transactionIDs as keys for items
                 let transactionData = Object.keys(dataObj).map(key => {
                     let obj = dataObj[key];
                     obj.key = key;
@@ -205,7 +210,7 @@ class InterestedList extends React.Component {
                 // For each relevant transaction, get the user info associated to it
                 for (var i = 0; i < numTransactions; i++) {
                     const index = i;
-                    var renterID = transactionData[index].renterID;
+                    const renterID = transactionData[index].renterID;
                     fetch('https://flick-prod.herokuapp.com/users/' + renterID, {
                         method: 'GET',
                         headers: {
@@ -217,18 +222,19 @@ class InterestedList extends React.Component {
                     .then((response) => {
                         response.key = renterID;
                         users.push(response);
+                        
+                        if (i >= numTransactions - 1) {
+                            // Assign the found users to the interestedUsers state, which will generate the list
+                            this.setState({
+                                interestedUsers: users
+                            });
+                        }
                     })
                     .done();
                 }
             }
 
-            // Assign the found users to the interestedUsers state, which will generate the list
-            this.setState({
-                interestedUsers: users
-            });
           
-            // console.log(this.state.interestedUsers);
-
         })
         .done();
     }
@@ -238,7 +244,7 @@ class InterestedList extends React.Component {
     }
 
     render() {
-
+        console.log(this.state.interestedUsers);
         return (
             <FlatList
                 data={this.state.interestedUsers}
@@ -247,11 +253,40 @@ class InterestedList extends React.Component {
                         roundAvatar
                         title={'Name: ' + item.name}
                         subtitle={'Email: ' + item.email}
-                        // leftAvatar={{ source: {uri: user.pictureURL} }}
-                        // onPress={() => this.props.navigation.navigate(
-                        //     'ViewListing', 
-                        //     {listingInfo: user}
-                        // )}
+                        onPress={() => {
+
+                            Alert.alert(
+                                'Renter Confirmation',
+                                'Have you given your item to ' + item.name + '?',
+                                [
+                                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                    {text: 'Confirm', onPress: () => {
+                                        console.log('Renter Confirmed');
+                                        var data = {
+                                            renterID: item.key,
+                                            listingID: listingInfo.key,
+                                        };
+
+                                        var formBody = [];
+                                        for(var property in data){
+                                            var encodedKey = encodeURIComponent(property);
+                                            var encodedValue = encodeURIComponent(data[property]);
+                                            formBody.push(encodedKey + "=" + encodedValue);
+                                        }
+                                        formBody = formBody.join("&");
+                                        fetch('https://flick-prod.herokuapp.com/selectrenter/', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+                                            },
+                                            body: formBody
+                                        })
+                                        .done()
+                                    }},
+                                ],
+                                { cancelable: false }
+                            )
+                        }}
                     />
                 )}
                 ItemSeparatorComponent={this.renderSeparator}
@@ -263,7 +298,6 @@ class InterestedList extends React.Component {
 class InterestedButton extends React.Component {
 
     showInterest() {
-
         var transactionData = {
             listingID: listingInfo.key,
             ownerID: listingInfo.ownerID,
