@@ -68,6 +68,7 @@ export default class App extends Component<Props> {
 
     render() {
 
+
         console.log(this.state.user);
         global.user = this.state.user;
 

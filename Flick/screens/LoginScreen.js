@@ -50,6 +50,7 @@ export default class LoginScreen extends React.Component {
             // login with credential
             const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
 
+            /*
             console.log("Checking if user exists");
             // Check if the user exists in the database
             fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
@@ -101,6 +102,7 @@ export default class LoginScreen extends React.Component {
                 }
             })
             .done();
+            */
 
         } catch(e) {
             console.error(e);
