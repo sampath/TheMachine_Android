@@ -1,11 +1,13 @@
 import React from 'react';
+import ImagePicker from 'react-native-image-picker';
 import { 
     Image, 
     Platform, 
     StyleSheet, 
     Text, 
     TouchableOpacity, 
-    View, 
+    View,
+    PixelRatio, 
 } from 'react-native';
 import { 
     Header,
@@ -21,18 +23,20 @@ export default class PostListingScreen extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {name: 'empty', price: '', descr: '', tags: ''}
+        this.state = {name: '', price: '', descr: '', tags: '', imageSource: null};
     }
 
-    handleClick(){
+    handlePost(){
         var data = {
             'ownerID': global.user._user.uid,
             'itemName': this.state.name,
             'tags': this.state.tags,
             'price': this.state.price,
             'description': this.state.descr,
-            'endTime': '?'
+            'endTime': '?',
+            'pictureURL': this.state.imageSource,
         };
+        console.log(this.state.imageSource)
         var formBody = [];
         for( var property in data){
             var encodedKey = encodeURIComponent(property);
@@ -48,7 +52,46 @@ export default class PostListingScreen extends React.Component {
             body: formBody
         })
         .done()
+    }
 
+    handleImagePick(){
+        const options = {
+            quality: 1.0,
+            maxWidth: 200,
+            maxHeight: 200,
+            storageOptions: {
+                skipBackup: true
+            }
+        };
+
+        ImagePicker.showImagePicker(options, (response) =>{
+            console.log('Response = ', response);
+  
+            if (response.didCancel) {
+              console.log('User cancelled photo picker');
+            }
+
+            else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            }
+
+            else if (response.customButton) {
+              console.log('User tapped custom button: ', response.customButton);
+            }
+
+            else {
+              let source = { uri: response.uri };
+      
+              // You can also display the image using data:
+              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+      
+              this.setState({
+     
+                ImageSource: source
+     
+              });
+            }
+        });
     }
 
     render() {
@@ -92,13 +135,22 @@ export default class PostListingScreen extends React.Component {
                         onChangeText = {(tags) => this.setState({tags})}
                     />
 
+                        <TouchableOpacity onPress={this.handleImagePick.bind(this)}>
+                            <View style={styles.ImageContainer}>
+                            {
+                                this.state.ImageSource == null ? <Text> Upload Photo </Text>:
+                                <Image style = {styles.ImageContainer} source={this.state.ImageSource} />
+                            }
+                            </View>
+                        </TouchableOpacity>
+
                     <View style={styles.postButton}>
                         <Button 
                             title='Post'
                             titleStyle={{
                                 color:'black',
                             }}
-                            onPress={() => this.handleClick()}
+                            onPress={() => this.handlePost()}
                             buttonStyle={{
                                 backgroundColor: colorCodes.mintCustom,
                                 width: 370,
@@ -109,9 +161,8 @@ export default class PostListingScreen extends React.Component {
             </View>
         );
 
-        
+    }
   }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -141,4 +192,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  ImageContainer: {
+      borderRadius: 5,
+      width: 200,
+      height: 200,
+      borderColor: '#9B9B9B',
+      borderWidth: 1 / PixelRatio.get(),
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 37
+      
+    },
 });
