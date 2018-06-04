@@ -26,8 +26,6 @@ export default class HomeScreen extends React.Component {
             listingData: [],
             refreshing: false,
         };
-
-        this.getAllListings = this.getAllListings.bind(this);
     }
 
     // A simple separator to separate listings in the view
@@ -42,13 +40,6 @@ export default class HomeScreen extends React.Component {
                 }}
             />
         );
-    };
-
-    handleRefresh() {
-        // this.setState({
-        //     refreshing: true
-        // });
-        this.getAllListings();
     }
 
     // Uses GET request to query all listing data
@@ -80,6 +71,13 @@ export default class HomeScreen extends React.Component {
             }
         })
         .done();
+    }
+
+    handleRefresh() {
+        // this.setState({
+        //     refreshing: true
+        // });
+        this.getAllListings();
     }
 
     // After component renders, get the listing data for the list
@@ -135,8 +133,8 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             </View>
-        );
-  }
+        )
+    }
 }
 
 const styles = StyleSheet.create({
