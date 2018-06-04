@@ -19,24 +19,24 @@ import {
 } from 'react-native-elements'
 export default class PostListingScreen extends React.Component {
 
-
-
     constructor(props){
         super(props);
-        this.state = {name: '', price: '', descr: '', tags: '', imageSource: null};
+        this.state = {name: '', price: '', descr: '', tags: '', imageData: '', imageUri: null};
     }
 
     handlePost(){
+
+
         var data = {
             'ownerID': global.user._user.uid,
             'itemName': this.state.name,
             'tags': this.state.tags,
             'price': this.state.price,
             'description': this.state.descr,
-            'endTime': '?',
-            'pictureURL': this.state.imageSource,
+            'picturePath': this.state.imageData,
         };
-        console.log(this.state.imageSource)
+        console.log(this.state.imageData)
+
         var formBody = [];
         for( var property in data){
             var encodedKey = encodeURIComponent(property);
@@ -60,38 +60,36 @@ export default class PostListingScreen extends React.Component {
             maxWidth: 200,
             maxHeight: 200,
             storageOptions: {
-                skipBackup: true
+            skipBackup: true
             }
         };
 
         ImagePicker.showImagePicker(options, (response) =>{
-            console.log('Response = ', response);
+                console.log('Response = ', response);
   
             if (response.didCancel) {
-              console.log('User cancelled photo picker');
+                console.log('User cancelled photo picker');
             }
 
             else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
+                console.log('ImagePicker Error: ', response.error);
             }
 
             else if (response.customButton) {
-              console.log('User tapped custom button: ', response.customButton);
+                console.log('User tapped custom button: ', response.customButton);
             }
 
             else {
-              let source = { uri: response.uri };
-      
-              // You can also display the image using data:
-              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-      
-              this.setState({
-     
-                ImageSource: source
-     
+                this.setState({  
+                imageData: {data: response.data},
+                imageUri: {uri: response.uri}
               });
+            console.log(this.state.imageData)
+            console.log(this.state.imageUri)
+
             }
         });
+
     }
 
     render() {
@@ -138,8 +136,8 @@ export default class PostListingScreen extends React.Component {
                         <TouchableOpacity onPress={this.handleImagePick.bind(this)}>
                             <View style={styles.ImageContainer}>
                             {
-                                this.state.ImageSource == null ? <Text> Upload Photo </Text>:
-                                <Image style = {styles.ImageContainer} source={this.state.ImageSource} />
+                                this.state.imageUri == null ? <Text> Upload Photo </Text>:
+                                <Image style = {styles.ImageContainer} source={this.state.imageUri} />
                             }
                             </View>
                         </TouchableOpacity>
