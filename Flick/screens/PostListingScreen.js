@@ -24,9 +24,8 @@ export default class PostListingScreen extends React.Component {
         this.state = {name: '', price: '', descr: '', tags: '', imageData: '', imageUri: null};
     }
 
-    handlePost(){
-
-
+    // Extracts data from form and creates a listing on the database
+    handlePost() {
         var data = {
             'ownerID': global.user._user.uid,
             'itemName': this.state.name,
