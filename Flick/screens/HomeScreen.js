@@ -51,7 +51,7 @@ export default class HomeScreen extends React.Component {
 
     // Uses GET request to query all listing data
     getAllListings() {
-        fetch('https://flick-prod.herokuapp.com/listings/', {
+        fetch('https://flick-staging.herokuapp.com/listings/', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
