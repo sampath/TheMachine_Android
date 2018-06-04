@@ -61,7 +61,7 @@ export default class PostListingScreen extends React.Component {
 
     validateInput(){
         if(isNaN(this.state.price) | this.state.price=='' ){return false;}
-        if(this.state.imageUri == null){return false;}
+        // if(this.state.imageUri == null){return false;}
         if(this.state.itemName == ''){return false;}
         if(this.state.tags == ''){return false;}
         if(this.state.descr==''){return false;}
