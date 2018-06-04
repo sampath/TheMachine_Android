@@ -81,6 +81,13 @@ export default class HomeScreen extends React.Component {
         .done();
     }
 
+    handleRefresh() {
+        // this.setState({
+        //     refreshing: true
+        // });
+        this.getAllListings();
+    }
+
     // After component renders, get the listing data for the list
     componentDidMount() {
         this.getAllListings();
@@ -118,6 +125,7 @@ export default class HomeScreen extends React.Component {
                                 'ViewListing', 
                                 {listingInfo: item}
                             )}
+
                         />
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
@@ -133,8 +141,8 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             </View>
-        );
-  }
+        )
+    }
 }
 
 const styles = StyleSheet.create({
