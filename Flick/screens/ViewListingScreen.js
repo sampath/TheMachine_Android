@@ -240,17 +240,28 @@ class InterestedList extends React.Component {
 class InterestedButton extends React.Component {
 
     showInterest(userId, ownerId, listingId) {
+
+        console.log(listingInfo.key);
+        var transactionData = {
+            listingID: listingInfo.key,
+            ownerID: listingInfo.ownerID,
+            renterID: global.user._user.uid,
+            price: listingInfo.price,
+        }
+        var formBody = [];
+        for (var property in transactionData) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(transactionData[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
         fetch('https://flick-prod.herokuapp.com/transactions/', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
             },
-            body: JSON.stringify({
-                listingID: listingInfo.key,
-                ownerID: listingInfo.ownerID,
-                renterID: global.user._user.uid,
-                price: listingInfo.price,
-            }),
+            body: formBody
         })
         .done()
     }
