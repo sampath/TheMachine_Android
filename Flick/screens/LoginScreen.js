@@ -52,7 +52,7 @@ export default class LoginScreen extends React.Component {
             
             console.log("Checking if user exists");
             // Check if the user exists in the database
-            fetch('https://flick-staging.herokuapp.com/users/' + global.user._user.uid, {
+            fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -92,7 +92,7 @@ export default class LoginScreen extends React.Component {
 
                     console.log("FB", formBody)
 
-                    fetch('https://flick-staging.herokuapp.com/users/', {
+                    fetch('https://flick-prod.herokuapp.com/users/', {
                         method: 'POST',
                         headers: {
                             'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
