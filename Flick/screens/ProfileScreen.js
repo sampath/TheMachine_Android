@@ -32,15 +32,22 @@ export default class HomeScreen extends React.Component {
         this.updateIndex = this.updateIndex.bind(this)
     }
 
-    updateIndex (selectedIndex) {
+    updateIndex(selectedIndex) {
         this.setState({selectedIndex})
     }
 
-    render() {
+    // Methods
+    async signOut() {
+            firebase.auth().signOut()
+            .then(() => {
+                console.log("Logged out of firebase");
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+    }
 
-        // console.log('Profile');
-        // console.log(firebase.auth().currentUser['_user']['displayName']);
-        // console.log(global.user);
+    render() {
         const userListingData = [
             {   
                 key: '1',
@@ -88,7 +95,7 @@ export default class HomeScreen extends React.Component {
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     centerComponent={{ 
-                        text:global.user._user.displayName, 
+                        text: global.user._user.displayName, 
                         style: { 
                             color: '#000',
                             marginRight: 0,
@@ -168,14 +175,9 @@ export default class HomeScreen extends React.Component {
 
             </View>
         );
-  }
+    }
 
 
-  // Methods
-  signOut = () => {
-    firebase.auth().signOut();
-    global.user = {};
-  }
 }
 
 const styles = StyleSheet.create({

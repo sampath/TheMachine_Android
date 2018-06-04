@@ -39,23 +39,25 @@ export default class App extends Component<Props> {
      * object(logged in)
      */
     componentDidMount() {
-        //GoogleSignin.configure({}).then(()=> {
-        //});
-
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
-
-            if( user != null ) {
-                GoogleSignin.signOut().then(()=> {
-                    console.log('Logged Out');
-                }).catch((err) => {
-                    
-                });
-            }
-
             this.setState({
                 loading: false,
                 user,
             });
+
+            if( !user ) {
+                GoogleSignin.signOut()
+                .then(()=> {
+                    global.user = {};
+                    console.log('Logged Out');
+                })
+                .catch((err) => {
+                    
+                });
+            } else {
+                console.log('Logged In');
+            }
+
         });
     }
 
@@ -70,8 +72,9 @@ export default class App extends Component<Props> {
 
     render() {
 
-        console.log('this.state.user ' + this.state.user);
+        console.log(this.state.user);
         global.user = this.state.user;
+
         if (this.state.user) return <RootNavigation />;
 
         return <LoginScreen />;

@@ -29,7 +29,33 @@ export default class ViewListingScreen extends React.Component {
     
         this.state = {
             listingData: [],
+            isInterested: false,
         };
+    }
+
+    checkIfInterested() {
+        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingInfo.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response);
+            this.setState({
+                isInterested: response
+            });
+
+            // console.log(this.state.listingData);
+        })
+        .done();
+    }
+
+    componentDidMount() {
+        this.checkIfInterested();
     }
 
     render() {
@@ -38,7 +64,7 @@ export default class ViewListingScreen extends React.Component {
 
         if (global.user._user.uid === listingInfo.ownerID) {
             interestedComponent = <InterestedList />;
-        } else {
+        } else if (!this.state.isInterested) {
             interestedComponent = <InterestedButton />;
         }
 

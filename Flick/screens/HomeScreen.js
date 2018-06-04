@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
 
     handleRefresh() {
         this.setState({
-            refreshing: true,
+            refreshing: true
         });
         getAllListings();
     }
