@@ -43,7 +43,7 @@ export default class PostListingScreen extends React.Component {
             formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-        fetch('https://flick-staging.herokuapp.com/test/listings/', {
+        fetch('https://flick-prod.herokuapp.com/test/listings/', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
