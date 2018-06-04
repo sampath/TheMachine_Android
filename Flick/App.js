@@ -46,18 +46,14 @@ export default class App extends Component<Props> {
             });
 
             if( !user ) {
-                GoogleSignin.signOut()
-                .then(()=> {
-                    global.user = {};
-                    console.log('Logged Out');
-                })
-                .catch((err) => {
-                    
+                GoogleSignin.signOut().then(()=> {
+                    console.log('Google Logged Out');
+                }).catch((err) => {
+                    console.log(err);
                 });
             } else {
                 console.log('Logged In');
             }
-
         });
     }
 
