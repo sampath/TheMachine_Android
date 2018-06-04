@@ -54,8 +54,7 @@ export default class ViewListingScreen extends React.Component {
         var interestedComponent;
         listingInfo = this.props.navigation.state.params.listingInfo;
 
-        // if (user.Id === listingInfo.ownerId) {
-        if (true) {
+        if (global.user._user.uid === listingInfo.ownerID) {
             interestedComponent = <InterestedList />;
         } else {
             interestedComponent = <InterestedButton />;
@@ -161,7 +160,7 @@ class InterestedList extends React.Component {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-            },
+            }
         })
         .then((response) => response.json())
         .then((responseData) => {
@@ -179,7 +178,6 @@ class InterestedList extends React.Component {
 
                 var users = [];
                 var numTransactions = transactionData.length;
-                var renterIDs = new Array(numTransactions);
 
                 // For each relevant transaction, get the user info associated to it
                 for (var i = 0; i < numTransactions; i++) {
@@ -218,8 +216,6 @@ class InterestedList extends React.Component {
 
     render() {
 
-        // console.log(this.state.interestedUsers);
-
         return (
             <FlatList
                 data={this.state.interestedUsers}
@@ -243,15 +239,27 @@ class InterestedList extends React.Component {
 
 class InterestedButton extends React.Component {
 
-    newTransaction(userId, ownerId, listingId) {
-        console.log("help me");
+    showInterest(userId, ownerId, listingId) {
+        fetch('https://flick-prod.herokuapp.com/transactions/', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: JSON.stringify({
+                listingID: listingInfo.key,
+                ownerID: listingInfo.ownerID,
+                renterID: global.user._user.uid,
+                price: listingInfo.price,
+            }),
+        })
+        .done()
     }
 
     render() {
         return (
             <ActionButton 
                 buttonColor={colorCodes.mintCustom}
-                onPress={this.newTransaction}
+                onPress={this.showInterest}
                 buttonTextStyle={{
                     color: 'black',
                 }}

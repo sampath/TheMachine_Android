@@ -77,6 +77,8 @@ export default class HomeScreen extends React.Component {
 
     render() {
 
+        console.log(global.user);
+
         return (
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}

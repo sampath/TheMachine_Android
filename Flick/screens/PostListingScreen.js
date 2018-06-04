@@ -27,6 +27,7 @@ export default class PostListingScreen extends React.Component {
 
     handlePost(){
         var data = {
+            'ownerID': global.user._user.uid,
             'itemName': this.state.name,
             'tags': this.state.tags,
             'price': this.state.price,

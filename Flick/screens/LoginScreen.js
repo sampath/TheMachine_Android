@@ -29,9 +29,8 @@ export default class LoginScreen extends React.Component {
   }
 
    // Methods
-    onloginOrRegister = async ()=> {
+    onloginOrRegister = async () => {
 
-        
         try {
             await GoogleSignin.configure();
             const data = await GoogleSignin.signIn();
@@ -48,7 +47,6 @@ export default class LoginScreen extends React.Component {
             console.error(e);
         }
         
-
         //GoogleSignin.configure({}).then(()=> {
 
             /*
@@ -59,8 +57,6 @@ export default class LoginScreen extends React.Component {
             }).done();
             */
         console.log("login called");
-
-
         
         /*
         GoogleSignin.signIn().then((data) => {
