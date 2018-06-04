@@ -62,20 +62,22 @@ export default class HomeScreen extends React.Component {
         .then((response) => {
             let dataObj = response
 
-            console.log(dataObj);
+            if (dataObj) {
+                // console.log(dataObj);
 
-            let dataArray = Object.keys(dataObj).map(key => {
-                let obj = dataObj[key];
-                obj.key = key;
-                return obj;
-            });
+                let dataArray = Object.keys(dataObj).map(key => {
+                    let obj = dataObj[key];
+                    obj.key = key;
+                    return obj;
+                });
 
-            this.setState({
-                listingData: dataArray,
-                refreshing: false,
-            });
+                this.setState({
+                    listingData: dataArray,
+                    refreshing: false,
+                });
 
-            console.log(this.state.listingData);
+                // console.log(this.state.listingData);
+            }
         })
         .done();
     }
