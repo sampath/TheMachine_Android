@@ -4,6 +4,7 @@ import {
     Platform,
     StyleSheet,
     Text,
+    TouchableHighlight,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -26,11 +27,18 @@ export default class LoginScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>THIS IS THE LOGIN PAGE</Text>
-                <Button
-                    onPress={this.onloginOrRegister.bind(this)}
-                    title='Login'
+                <Image
+                    style={styles.logoStyle}
+                    source={require('../flick_logo.png')}
                 />
+                <Text style={styles.titleStyle}>flick</Text>
+                <Text style={styles.subStyle}>what you need, when you need it</Text>
+                <TouchableHighlight style={styles.buttonWrap} onPress={this.onloginOrRegister.bind(this)}>
+                    <Image
+                        style={styles.buttonStyle}
+                        source={require('../signin-button.png')}
+                    />
+                </TouchableHighlight>
             </View>
         );
   }
@@ -115,6 +123,31 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fcfcfc',
+    alignItems: 'center',
+
   },
+  buttonStyle: {
+    width: 300,
+    height: 70,
+  },
+  buttonWrap: {
+    marginTop: 100,
+  },
+  logoStyle: {
+    marginTop: 100,
+    width: 200,
+    height: 200,
+
+  },
+  titleStyle: {
+    marginTop: 10,
+    fontSize: 50,
+    fontWeight: '100'
+  },
+  subStyle: {
+    marginTop: 2,
+    fontSize: 20,
+    fontWeight: '200'
+  }
 });
