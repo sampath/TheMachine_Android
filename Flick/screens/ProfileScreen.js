@@ -67,6 +67,7 @@ export default class ProfileScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.log("hello");
         this.getUserListings();
     }
 
