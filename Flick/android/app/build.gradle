@@ -136,7 +136,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-google-signin')
     implementation (project(':react-native-firebase')) {
         transitive = false
     }
@@ -153,10 +152,6 @@ dependencies {
     implementation "com.google.android.gms:play-services-base:15.0.1"
     implementation "com.google.firebase:firebase-core:15.0.2"
     implementation "com.google.firebase:firebase-auth:15.1.0"
-
-
-
-
 
 }
 

@@ -20,98 +20,14 @@ import {
 } from 'react-native-elements'
 export default class PostListingScreen extends React.Component {
 
-  constructor(props) {
+    constructor(props) {
         super(props);
         this.state = {
-            name: '', 
-            price: '', 
-            descr: '', 
-            tags: '', 
-            imageData: '', 
-            imageUri: null
+            name: '',
+            email: '',
+            pass: '',
+            passverify: '',
         };
-    }
-
-    // Extracts data from form and creates a listing on the database
-    handlePost() {
-        var valid = this.validateInput()
-        console.log(valid)
-        if (valid) {
-            var data = {
-                'ownerID': global.user._user.uid,
-                'itemName': this.state.name,
-                'tags': this.state.tags,
-                'price': this.state.price,
-                'description': this.state.descr,
-                'picturePath': this.state.imageData,
-            };
-
-            var formBody = [];
-            for(var property in data){
-                var encodedKey = encodeURIComponent(property);
-                var encodedValue = encodeURIComponent(data[property]);
-                formBody.push(encodedKey + "=" + encodedValue);
-            }
-            formBody = formBody.join("&");
-            fetch('https://flick-prod.herokuapp.com/test/listings/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: formBody
-            })
-            .done()
-            this.props.navigation.goBack(null)
-
-        }else{Alert.alert('Invalid Input')}
-    }
-
-    validateInput(){
-        if(isNaN(this.state.price) | this.state.price=='' ){return false;}
-        // if(this.state.imageUri == null){return false;}
-        if(this.state.itemName == ''){return false;}
-        if(this.state.tags == ''){return false;}
-        if(this.state.descr==''){return false;}
-        return true;
-
-    }
-    handleImagePick() {
-        const options = {
-            quality: 1.0,
-            maxWidth: 200,
-            maxHeight: 200,
-            storageOptions: {
-            skipBackup: true
-            }
-        };
-
-        ImagePicker.showImagePicker(options, (response) =>{
-                console.log('Response = ', response);
-  
-            if (response.didCancel) {
-                console.log('User cancelled photo picker');
-            }
-
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
-
-            else {
-                let source = response.data
-                
-                this.setState({  
-                imageData: source,
-                imageUri: {uri: response.uri}
-              });
-            console.log(this.state.imageUri)
-
-            }
-        });
-
     }
 
     render() {
@@ -154,15 +70,6 @@ export default class PostListingScreen extends React.Component {
                         onChangeText = {(tags) => this.setState({tags})}
                     />
 
-                        <TouchableOpacity onPress={this.handleImagePick.bind(this)}>
-                            <View style={styles.ImageContainer}>
-                            {
-                                this.state.imageUri == null ? <Text> Upload Photo </Text>:
-                                <Image style = {styles.ImageContainer} source={this.state.imageUri} />
-                            }
-                            </View>
-                        </TouchableOpacity>
-
                     <View style={styles.postButton}>
                         <Button 
                             title='Post'
@@ -181,6 +88,42 @@ export default class PostListingScreen extends React.Component {
         );
 
     }
+
+    onRegister() {
+
+        const valid = this.validateInput();
+
+        if (valid) {
+            // Will be set by the forms
+            const { email, password } = this.state;
+
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((firebaseuser) => {
+                console.log(user)
+
+                // TODO: Create a new user in our users firebase table
+                // TODO: Go back to the sign in page
+                this.props.navigation.goBack(null);
+            })
+            .catch((err) => {
+                // If an error occurs, capture and log the message
+                const { code, message } = err;
+                console.log(code, message);
+            })
+            
+        }
+
+}
+
+    validateInput(){
+        if(isNaN(this.state.price) | this.state.price=='' ){return false;}
+        // if(this.state.imageUri == null){return false;}
+        if(this.state.itemName == ''){return false;}
+        if(this.state.tags == ''){return false;}
+        if(this.state.descr==''){return false;}
+        return true;
+    }
+
   }
 
 const styles = StyleSheet.create({

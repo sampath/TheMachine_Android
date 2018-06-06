@@ -49,8 +49,6 @@ export default class ProfileScreen extends React.Component {
             let dataObj = response
 
             if (dataObj) {
-                // console.log(dataObj);
-
                 let dataArray = Object.keys(dataObj).map(key => {
                     let obj = dataObj[key];
                     obj.key = key;
@@ -60,8 +58,6 @@ export default class ProfileScreen extends React.Component {
                 this.setState({
                     listingData: dataArray,
                 });
-
-                // console.log(this.state.listingData);
             }
         })
     }
@@ -112,7 +108,6 @@ export default class ProfileScreen extends React.Component {
                             }}
                         />
                     }
-                    
                 />
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />

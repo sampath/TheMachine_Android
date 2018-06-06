@@ -33,8 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGoogleSigninPackage(),
             new RNFirebasePackage(),
             new ImagePickerPackage(),
-            // new RNFirebasePackage(),
-            // new RNGoogleSigninPackage(),
             new VectorIconsPackage(),
             new RNFirebaseAuthPackage() // <-- Add this line
 
