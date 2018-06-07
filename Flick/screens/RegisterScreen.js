@@ -18,6 +18,9 @@ import {
     FormValidationMessage, 
     Input ,
 } from 'react-native-elements'
+
+import firebase from 'react-native-firebase';
+
 export default class PostListingScreen extends React.Component {
 
     constructor(props) {
@@ -25,8 +28,9 @@ export default class PostListingScreen extends React.Component {
         this.state = {
             name: '',
             email: '',
-            pass: '',
-            passverify: '',
+            phone: '',
+            password: '',
+            passwordverify: '',
         };
     }
 
@@ -46,37 +50,52 @@ export default class PostListingScreen extends React.Component {
 
                 <View style={styles.bodyStyle}>
 
-                    <Input 
-                        containerStyle={styles.textInput}
-                        placeholder='Item Name'
-                        onChangeText = {(name) => this.setState({name})}
+                    <Input style={styles.textInput}
+                        placeholder='Email'
+                        leftIcon={{
+                            type:'feather',
+                            name:'mail',
+                        }}
+                        onChangeText={(email) => this.setState({email})}
+                    />
+                    
+                    <Input style={styles.textInput}
+                        placeholder='Phone Number'
+                        leftIcon={{
+                            type:'feather',
+                            name:'phone',
+                        }}
+                        onChangeText = {(phone) => this.setState({phone})}
                     />
 
-                    <Input
-                        containerStyle={styles.textInput} 
-                        placeholder='Price'
-                        onChangeText = {(price) => this.setState({price})}
+                    <Input style={styles.textInput}
+                        secureTextEntry={true}
+                        placeholder='Password'
+                        leftIcon={{
+                            type:'feather',
+                            name:'lock',
+                        }}
+                        onChangeText={(password) => this.setState({password})}
                     />
 
-                    <Input
-                        containerStyle={styles.textInput} 
-                        placeholder='Description'
-                        onChangeText = {(descr) => this.setState({descr})}
+                    <Input style={styles.textInput}
+                        secureTextEntry={true}
+                        placeholder='Confirm Password'
+                        leftIcon={{
+                            type:'feather',
+                            name:'lock',
+                        }}
+                        onChangeText={(passwordverify) => this.setState({passwordverify})}
                     />
 
-                    <Input
-                        containerStyle={styles.textInput} 
-                        placeholder='Tags'
-                        onChangeText = {(tags) => this.setState({tags})}
-                    />
 
                     <View style={styles.postButton}>
                         <Button 
-                            title='Post'
+                            title='Register'
                             titleStyle={{
                                 color:'black',
                             }}
-                            onPress={() => {this.handlePost()}}
+                            onPress={() => {this.onRegister()}}
                             buttonStyle={{
                                 backgroundColor: colorCodes.mintCustom,
                                 width: 370,
@@ -97,7 +116,7 @@ export default class PostListingScreen extends React.Component {
             // Will be set by the forms
             const { email, password } = this.state;
 
-            firebase.auth().createUserWithEmailAndPassword(email, password)
+            firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
             .then((firebaseuser) => {
                 console.log(user)
 
@@ -113,14 +132,16 @@ export default class PostListingScreen extends React.Component {
             
         }
 
+        Alert.alert('Invalid Input');
+
 }
 
     validateInput(){
-        if(isNaN(this.state.price) | this.state.price=='' ){return false;}
-        // if(this.state.imageUri == null){return false;}
-        if(this.state.itemName == ''){return false;}
-        if(this.state.tags == ''){return false;}
-        if(this.state.descr==''){return false;}
+        if (isNaN(this.state.phone)){return false;}
+        if (this.state.email == ''){return false;}
+        if (this.state.password == ''){return false;}
+        if (this.state.passwordverify ==''){return false;}
+        if (this.state.password != this.state.passwordverify) {return false;}
         return true;
     }
 

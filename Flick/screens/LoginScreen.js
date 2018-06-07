@@ -14,8 +14,6 @@ import {
  } from 'react-native-elements';
 
 import firebase from 'react-native-firebase';
-import { GoogleSignin } from 'react-native-google-signin';
-
 
 export default class LoginScreen extends React.Component {
 
@@ -40,19 +38,19 @@ export default class LoginScreen extends React.Component {
                 <Input
                     placeholder='Email'
                     leftIcon={{
-                        type:'feather'
-                        name:'mail'
+                        type:'feather',
+                        name:'mail',
                     }}
-                    onChangeText={{(email) => this.setState({name})}}
+                    onChangeText={(email) => this.setState({email})}
                 />
                 <Input
-                    secureTextEntry=true
+                    secureTextEntry={true}
                     placeholder='password'
                     leftIcon={{
-                        type:'feather'
-                        name:'lock'
+                        type:'feather',
+                        name:'lock',
                     }}
-                    onChangeText={{(pass) => this.setState({pass})}}
+                    onChangeText={(password) => this.setState({password})}
                 />
 
                 <Button style={styles.loginButton} 
@@ -60,13 +58,13 @@ export default class LoginScreen extends React.Component {
                     title='Login'
                 />
 
-                <TouchableHighlight style={styles.buttonWrap} 
-                    onPress={this.props.navigation.navigate('Register')}
+                <TouchableOpacity style={styles.buttonWrap} 
+                    onPress={() => this.props.navigation.navigate('Register')}
                 >
                     <Text style={styles.subStyle}>
                         Not a user? Register here
                     </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
 
             </View>
         );
@@ -76,7 +74,7 @@ export default class LoginScreen extends React.Component {
         // Will be set by the forms
         const { email, password } = this.state;
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
+        firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((firebaseuser) => {
             console.log(firebaseuser)
             this.setState({
@@ -107,16 +105,16 @@ const styles = StyleSheet.create({
     height: 70,
   },
   buttonWrap: {
-    marginTop: 100,
+    marginTop: 90,
   },
   logoStyle: {
-    marginTop: 100,
+    marginTop: 50,
     width: 200,
     height: 200,
 
   },
   titleStyle: {
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 50,
     fontWeight: '100'
   },

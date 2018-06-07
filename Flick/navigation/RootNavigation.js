@@ -1,8 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
-import MainTabNavigator from './MainTabNavigator';
-import LoginScreen from '../screens/LoginScreen';
+import MainTabNavigation from './MainTabNavigation';
 import PostListingScreen from '../screens/PostListingScreen';
 import ViewListingScreen from '../screens/ViewListingScreen';
 import ConfirmationScreen from '../screens/ConfirmationScreen';
@@ -11,7 +10,7 @@ import ConfirmationScreen from '../screens/ConfirmationScreen';
 const RootStackNavigator = createStackNavigator(
     {
         Main: {
-            screen: MainTabNavigator,
+            screen: MainTabNavigation,
         },
         ViewListing: {
             screen: ViewListingScreen
@@ -21,9 +20,6 @@ const RootStackNavigator = createStackNavigator(
         },
         Confirmation: {
             screen: ConfirmationScreen
-        },
-        Login: {
-            screen: LoginScreen
         },
 
     },

@@ -46,6 +46,7 @@ export default class PostListingScreen extends React.Component {
                 'picturePath': this.state.imageData,
             };
 
+            // Encode the given form body for the query
             var formBody = [];
             for(var property in data){
                 var encodedKey = encodeURIComponent(property);
@@ -53,6 +54,7 @@ export default class PostListingScreen extends React.Component {
                 formBody.push(encodedKey + "=" + encodedValue);
             }
             formBody = formBody.join("&");
+
             fetch('https://flick-prod.herokuapp.com/test/listings/', {
                 method: 'POST',
                 headers: {
@@ -63,7 +65,7 @@ export default class PostListingScreen extends React.Component {
             .done()
             this.props.navigation.goBack(null)
 
-        }else{Alert.alert('Invalid Input')}
+        } else {Alert.alert('Invalid Input')}
     }
 
     validateInput(){

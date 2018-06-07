@@ -11,13 +11,11 @@ import {
     TabBarBottom 
 } from 'react-navigation';
 import './global.js'
-
-import MainTabNavigation from './navigation/MainTabNavigator';
-import RootNavigation from './navigation/RootNavigation';
-import LoginScreen from './screens/LoginScreen';
-
 import firebase from 'react-native-firebase';
-import { GoogleSignin } from 'react-native-google-signin';
+
+import MainTabNavigation from './navigation/MainTabNavigation';
+import RootNavigation from './navigation/RootNavigation';
+import LoginNavigation from './navigation/LoginNavigation';
 
 type Props = {};
 
@@ -41,7 +39,7 @@ export default class App extends Component<Props> {
         if (this.state.user) return <RootNavigation props={this.state.user}/>;
 
         // If the user isn't logged in
-        return <LoginScreen />;
+        return <LoginNavigation />;
     }
 
     /**

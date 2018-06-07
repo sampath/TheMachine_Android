@@ -1,5 +1,4 @@
 import React from 'react';
-import { GoogleSignin } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
 
 import {
@@ -23,6 +22,7 @@ import {
 } from 'react-native-elements'
 
 export default class ProfileScreen extends React.Component {
+
     constructor(props) {
         super(props);
     
@@ -31,58 +31,6 @@ export default class ProfileScreen extends React.Component {
             selectedIndex: 0,
         }
         this.updateIndex = this.updateIndex.bind(this);
-    }
-
-    // Uses GET request to query all listing data
-    getUserListings() {
-        fetch('https://flick-staging.herokuapp.com/transactions/user/' + '30K4PU1TEvQn2AxnJ8J6uyidlUT2' + '/', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response);
-
-            let dataObj = response
-
-            if (dataObj) {
-                let dataArray = Object.keys(dataObj).map(key => {
-                    let obj = dataObj[key];
-                    obj.key = key;
-                    return obj;
-                });
-
-                this.setState({
-                    listingData: dataArray,
-                });
-            }
-        })
-    }
-
-    componentDidMount() {
-        console.log("hello");
-        this.getUserListings();
-    }
-
-    updateIndex(selectedIndex) {
-        console.log(selectedIndex);
-        this.setState({selectedIndex});
-
-        this.getUserListings();
-    }
-
-    // Methods
-    async signOut() {
-            firebase.auth().signOut()
-            .then(() => {
-                console.log("Logged out of firebase");
-            })
-            .catch((e) => {
-                console.log(e);
-            })
     }
 
     render() {
@@ -101,7 +49,7 @@ export default class ProfileScreen extends React.Component {
                     }}
                     rightComponent={
                         <Button 
-                            onPress={this.signOut.bind(this)}
+                            onPress={this.onSignOut.bind(this)}
                             title='Logout'
                             style={{
                                 marginLeft: 0,
@@ -174,6 +122,58 @@ export default class ProfileScreen extends React.Component {
             </View>
         );
     }
+
+    componentDidMount() {
+        console.log("hello");
+        this.getUserListings();
+    }
+
+    // Uses GET request to query all listing data
+    getUserListings() {
+        fetch('https://flick-staging.herokuapp.com/transactions/user/' + '30K4PU1TEvQn2AxnJ8J6uyidlUT2' + '/', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+
+            let dataObj = response
+
+            if (dataObj) {
+                let dataArray = Object.keys(dataObj).map(key => {
+                    let obj = dataObj[key];
+                    obj.key = key;
+                    return obj;
+                });
+
+                this.setState({
+                    listingData: dataArray,
+                });
+            }
+        })
+    }
+
+    updateIndex(selectedIndex) {
+        console.log(selectedIndex);
+        this.setState({selectedIndex});
+
+        this.getUserListings();
+    }
+
+    async onSignOut() {
+        firebase.auth().signOut()
+        .then(() => {
+            console.log("Logged out");
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+    }
+
 
 }
 
