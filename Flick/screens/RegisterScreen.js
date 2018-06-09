@@ -18,6 +18,7 @@ import {
     FormValidationMessage, 
     Input ,
 } from 'react-native-elements'
+import { postRequest } from '../utils'
 
 import firebase from 'react-native-firebase';
 
@@ -50,7 +51,16 @@ export default class PostListingScreen extends React.Component {
 
                 <View style={styles.bodyStyle}>
 
-                    <Input style={styles.textInput}
+                    <Input containerStyle={styles.textInput}
+                        placeholder='Full Name'
+                        leftIcon={{
+                            type:'feather',
+                            name:'user',
+                        }}
+                        onChangeText={(name) => this.setState({name})}
+                    />
+
+                    <Input containerStyle={styles.textInput}
                         placeholder='Email'
                         leftIcon={{
                             type:'feather',
@@ -59,7 +69,7 @@ export default class PostListingScreen extends React.Component {
                         onChangeText={(email) => this.setState({email})}
                     />
                     
-                    <Input style={styles.textInput}
+                    <Input containerStyle={styles.textInput}
                         placeholder='Phone Number'
                         leftIcon={{
                             type:'feather',
@@ -68,7 +78,7 @@ export default class PostListingScreen extends React.Component {
                         onChangeText = {(phone) => this.setState({phone})}
                     />
 
-                    <Input style={styles.textInput}
+                    <Input containerStyle={styles.textInput}
                         secureTextEntry={true}
                         placeholder='Password'
                         leftIcon={{
@@ -78,7 +88,7 @@ export default class PostListingScreen extends React.Component {
                         onChangeText={(password) => this.setState({password})}
                     />
 
-                    <Input style={styles.textInput}
+                    <Input containerStyle={styles.textInput}
                         secureTextEntry={true}
                         placeholder='Confirm Password'
                         leftIcon={{
@@ -108,7 +118,7 @@ export default class PostListingScreen extends React.Component {
 
     }
 
-    onRegister() {
+    async onRegister() {
 
         const valid = this.validateInput();
 
@@ -118,11 +128,19 @@ export default class PostListingScreen extends React.Component {
 
             firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
             .then((firebaseuser) => {
-                console.log(user)
+                console.log(firebaseuser)
 
-                // TODO: Create a new user in our users firebase table
-                // TODO: Go back to the sign in page
+                this.setState({
+                    user: firebaseuser.user
+                });
+                global.user = firebaseuser.user;
+
+                // Create a new user in our users firebase table
+                this.createUserEntry();
+
+                // Go back to the sign in page
                 this.props.navigation.goBack(null);
+
             })
             .catch((err) => {
                 // If an error occurs, capture and log the message
@@ -130,19 +148,31 @@ export default class PostListingScreen extends React.Component {
                 console.log(code, message);
             })
             
+        } else {
+            // Let the user know they have invalid
+            Alert.alert('Invalid Input');
         }
 
-        Alert.alert('Invalid Input');
 
-}
+    }
 
-    validateInput(){
+    validateInput() {
         if (isNaN(this.state.phone)){return false;}
         if (this.state.email == ''){return false;}
         if (this.state.password == ''){return false;}
         if (this.state.passwordverify ==''){return false;}
         if (this.state.password != this.state.passwordverify) {return false;}
         return true;
+    }
+
+    createUserEntry() {
+        var formData = {
+            userID: global.user._user.uid,
+            name: this.state.name,
+            email: this.state.email,
+            phoneNumber: this.state.phone,
+        }
+        postRequest('users/', formData);
     }
 
   }
@@ -166,7 +196,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 15,
-    backgroundColor: colorCodes.lightGreyCustom,
+    // backgroundColor: colorCodes.lightGreyCustom,
     borderBottomWidth: 0,
   },
   postButton: {

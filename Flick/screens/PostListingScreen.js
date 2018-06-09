@@ -213,7 +213,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   ImageContainer: {
       borderRadius: 5,
       width: 200,
@@ -223,6 +222,5 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 37
-      
     },
 });

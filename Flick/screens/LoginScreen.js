@@ -35,7 +35,7 @@ export default class LoginScreen extends React.Component {
                 <Text style={styles.titleStyle}>flick</Text>
                 <Text style={styles.subStyle}>what you need, when you need it</Text>
                 
-                <Input
+                <Input containerStyle={styles.textInput}
                     placeholder='Email'
                     leftIcon={{
                         type:'feather',
@@ -43,7 +43,7 @@ export default class LoginScreen extends React.Component {
                     }}
                     onChangeText={(email) => this.setState({email})}
                 />
-                <Input
+                <Input containerStyle={styles.textInput}
                     secureTextEntry={true}
                     placeholder='password'
                     leftIcon={{
@@ -76,10 +76,12 @@ export default class LoginScreen extends React.Component {
 
         firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((firebaseuser) => {
-            console.log(firebaseuser)
+            console.log(firebaseuser);
             this.setState({
-                user: firebaseuser
-            })
+                user: firebaseuser.user
+            });
+
+            global.user = firebaseuser.user;
         })
         .catch((err) => {
             // If an error occurs, capture and log the message
@@ -98,7 +100,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fcfcfc',
     alignItems: 'center',
-
   },
   buttonStyle: {
     width: 300,
@@ -111,7 +112,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: 200,
     height: 200,
-
+  },
+  textInput: {
+    marginBottom: 15,
+    // backgroundColor: colorCodes.lightGreyCustom,
+    borderBottomWidth: 0,
   },
   titleStyle: {
     marginTop: 5,
@@ -120,7 +125,8 @@ const styles = StyleSheet.create({
   },
   subStyle: {
     marginTop: 2,
+    marginBottom: 10,
     fontSize: 20,
     fontWeight: '200'
-  }
+  },
 });
