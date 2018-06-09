@@ -13,10 +13,7 @@ import {
     Header,
     ListItem, 
 } from 'react-native-elements'
-
-
 import firebase from 'react-native-firebase';
-import { GoogleSignin } from 'react-native-google-signin';
 
 
 const list = [

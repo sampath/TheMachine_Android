@@ -8,19 +8,20 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { 
+    Button,
+    Input,
+ } from 'react-native-elements';
 
 import firebase from 'react-native-firebase';
-import { GoogleSignin } from 'react-native-google-signin';
-
 
 export default class LoginScreen extends React.Component {
 
     constructor(props) {
         super(props);
-    
         this.state = {
-            userExists: null
+            email: '',
+            password: '',
         };
     }
 
@@ -29,95 +30,69 @@ export default class LoginScreen extends React.Component {
             <View style={styles.container}>
                 <Image
                     style={styles.logoStyle}
-                    source={require('../flick_logo.png')}
+                    source={require('../img/flick_logo.png')}
                 />
                 <Text style={styles.titleStyle}>flick</Text>
                 <Text style={styles.subStyle}>what you need, when you need it</Text>
-                <TouchableHighlight style={styles.buttonWrap} onPress={this.onloginOrRegister.bind(this)}>
-                    <Image
-                        style={styles.buttonStyle}
-                        source={require('../signin-button.png')}
-                    />
-                </TouchableHighlight>
+                
+                <Input containerStyle={styles.textInput}
+                    placeholder='Email'
+                    leftIcon={{
+                        type:'feather',
+                        name:'mail',
+                    }}
+                    onChangeText={(email) => this.setState({email})}
+                />
+                <Input containerStyle={styles.textInput}
+                    secureTextEntry={true}
+                    placeholder='password'
+                    leftIcon={{
+                        type:'feather',
+                        name:'lock',
+                    }}
+                    onChangeText={(password) => this.setState({password})}
+                />
+
+                <Button style={styles.loginButton} 
+                    onPress={this.onLogin.bind(this)}
+                    title='Login'
+                />
+
+                <TouchableOpacity style={styles.buttonWrap} 
+                    onPress={() => this.props.navigation.navigate('Register')}
+                >
+                    <Text style={styles.subStyle}>
+                        Not a user? Register here
+                    </Text>
+                </TouchableOpacity>
+
             </View>
         );
-  }
-
-    // Methods
-    onloginOrRegister = async () => {
-        try {
-            const data = await GoogleSignin.signIn();
-            console.log(data);
-
-            global.user = data;
-
-            // Create firebase credential with token
-            const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
-
-            // login with credential
-            const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
-
-            
-            console.log("Checking if user exists");
-            // Check if the user exists in the database
-            fetch('https://flick-prod.herokuapp.com/users/' + global.user._user.uid, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            })
-            .then((response) => response.json())
-            .then((response) => {
-
-                console.log("made it here");
-                console.log(response);
-                
-                var userExists = response
-
-                console.log("got user info");
-                // If the user doesn't exist in the database, add them
-                if (userExists.error) {
-
-                    console.log("Creating new user");
-
-                    console.log(global.user);
-
-                    var formData = {
-                        userID: global.user._user.uid,
-                        name: global.user._user.displayName,
-                        email: global.user._user.email,
-                        phoneNumber: 'phoneNumber'
-                    }
-
-                    var formBody = [];
-                    for ( var property in formData) {
-                        var encodedKey = encodeURIComponent(property);
-                        var encodedValue = encodeURIComponent(formData[property]);
-                        formBody.push(encodedKey + "=" + encodedValue);
-                    }
-                    formBody = formBody.join("&");
-
-                    console.log("FB", formBody)
-
-                    fetch('https://flick-prod.herokuapp.com/users/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
-                        },
-                        body: formBody
-                    })
-                    .done();                
-                }
-            })
-            .done();
-            
-
-        } catch(e) {
-            console.error(e);
-        }
-
     }
+
+    onLogin() {
+        // Will be set by the forms
+        const { email, password } = this.state;
+
+        firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
+        .then((firebaseuser) => {
+            console.log(firebaseuser);
+            this.setState({
+                user: firebaseuser.user
+            });
+
+            global.user = firebaseuser.user;
+        })
+        .catch((err) => {
+            // If an error occurs, capture and log the message
+            const { code, message } = err;
+            console.log(code, message);
+        })
+    }
+
+
+
+
 }
 
 const styles = StyleSheet.create({
@@ -125,29 +100,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fcfcfc',
     alignItems: 'center',
-
   },
   buttonStyle: {
     width: 300,
     height: 70,
   },
   buttonWrap: {
-    marginTop: 100,
+    marginTop: 90,
   },
   logoStyle: {
-    marginTop: 100,
+    marginTop: 50,
     width: 200,
     height: 200,
-
+  },
+  textInput: {
+    marginBottom: 15,
+    // backgroundColor: colorCodes.lightGreyCustom,
+    borderBottomWidth: 0,
   },
   titleStyle: {
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 50,
     fontWeight: '100'
   },
   subStyle: {
     marginTop: 2,
+    marginBottom: 10,
     fontSize: 20,
     fontWeight: '200'
-  }
+  },
 });

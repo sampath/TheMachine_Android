@@ -22,14 +22,21 @@ export default class PostListingScreen extends React.Component {
 
   constructor(props) {
         super(props);
-        this.state = {name: '', price: '', descr: '', tags: '', imageData: '', imageUri: null};
+        this.state = {
+            name: '', 
+            price: '', 
+            descr: '', 
+            tags: '', 
+            imageData: '', 
+            imageUri: null
+        };
     }
 
     // Extracts data from form and creates a listing on the database
     handlePost() {
         var valid = this.validateInput()
         console.log(valid)
-        if(valid){
+        if (valid) {
             var data = {
                 'ownerID': global.user._user.uid,
                 'itemName': this.state.name,
@@ -39,13 +46,15 @@ export default class PostListingScreen extends React.Component {
                 'picturePath': this.state.imageData,
             };
 
+            // Encode the given form body for the query
             var formBody = [];
-            for( var property in data){
+            for(var property in data){
                 var encodedKey = encodeURIComponent(property);
                 var encodedValue = encodeURIComponent(data[property]);
                 formBody.push(encodedKey + "=" + encodedValue);
             }
             formBody = formBody.join("&");
+
             fetch('https://flick-prod.herokuapp.com/test/listings/', {
                 method: 'POST',
                 headers: {
@@ -56,7 +65,7 @@ export default class PostListingScreen extends React.Component {
             .done()
             this.props.navigation.goBack(null)
 
-        }else{Alert.alert('Invalid Input')}
+        } else {Alert.alert('Invalid Input')}
     }
 
     validateInput(){
@@ -204,7 +213,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   ImageContainer: {
       borderRadius: 5,
       width: 200,
@@ -214,6 +222,5 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 37
-      
     },
 });

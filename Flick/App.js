@@ -11,13 +11,11 @@ import {
     TabBarBottom 
 } from 'react-navigation';
 import './global.js'
-
-import MainTabNavigation from './navigation/MainTabNavigator';
-import RootNavigation from './navigation/RootNavigation';
-import LoginScreen from './screens/LoginScreen';
-
 import firebase from 'react-native-firebase';
-import { GoogleSignin } from 'react-native-google-signin';
+
+import MainTabNavigation from './navigation/MainTabNavigation';
+import RootNavigation from './navigation/RootNavigation';
+import LoginNavigation from './navigation/LoginNavigation';
 
 type Props = {};
 
@@ -27,11 +25,22 @@ export default class App extends Component<Props> {
         super(props);
     
         this.state = {
-            user: false,
             loading: true,
         };
     }
 
+    render() {
+        global.user = this.state.user;
+
+        // If the user state hasn't been determined
+        if (this.state.loading) return null;
+
+        // If the user is logged in
+        if (this.state.user) return <RootNavigation props={this.state.user}/>;
+
+        // If the user isn't logged in
+        return <LoginNavigation />;
+    }
 
     /**
      * Listen for any authentication state changes in Firebase.
@@ -39,25 +48,13 @@ export default class App extends Component<Props> {
      * object(logged in)
      */
     componentDidMount() {
-        GoogleSignin.configure();
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
             this.setState({
                 loading: false,
                 user,
             });
-
-            if( !user ) {
-                GoogleSignin.signOut().then(()=> {
-                    console.log('Google Logged Out');
-                }).catch((err) => {
-                    console.log(err);
-                });
-            } else {
-                console.log('Logged In');
-            }
         });
     }
-
     
     /**
      * Stop listening for authentication state changes when component unmounts
@@ -66,18 +63,11 @@ export default class App extends Component<Props> {
         this.authSubscription();
     }
 
-
-    render() {
-
-
-        console.log(this.state.user);
-        global.user = this.state.user;
-
-        if (this.state.user) return <RootNavigation />;
-
-        return <LoginScreen />;
-    }
 }
+
+// App functions
+
+
 
 const styles = StyleSheet.create({
   container: {
