@@ -50,12 +50,14 @@ export default class ProfileScreen extends React.Component {
     render() {
         const buttons = ['Active', 'Past']
         const { selectedIndex } = this.state
+
+        console.log("Profile", global.userData);
     
         return (
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     centerComponent={{ 
-                        text: global.user._user.displayName, 
+                        text: global.userData.name, 
                         style: { 
                             color: '#000',
                             marginRight: 0,
@@ -79,7 +81,7 @@ export default class ProfileScreen extends React.Component {
                         containerStyle={styles.profileImage}
                         size='xlarge'
                         rounded
-                        source={{uri: global.user._user.photoURL}}
+                        source={{uri: global.user.photoURL}}
                     />
                     <View style={styles.userRating}>
                         <Text h5>Renter Rating:</Text>
@@ -123,7 +125,6 @@ export default class ProfileScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log("hello");
         this.getUserListings();
     }
 

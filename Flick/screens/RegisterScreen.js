@@ -42,7 +42,7 @@ export default class PostListingScreen extends React.Component {
                 <Header backgroundColor={colorCodes.mintCustom}
                     outerContainerStyles={styles.flickHeader}
                     centerComponent={{ 
-                        text:'New Listing', 
+                        text:'Register', 
                         style: { 
                             color: '#000'
                         } 
@@ -99,13 +99,13 @@ export default class PostListingScreen extends React.Component {
                     />
 
 
-                    <View style={styles.postButton}>
+                    <View style={styles.button}>
                         <Button 
                             title='Register'
+                            onPress={() => {this.onRegister()}}
                             titleStyle={{
                                 color:'black',
                             }}
-                            onPress={() => {this.onRegister()}}
                             buttonStyle={{
                                 backgroundColor: colorCodes.mintCustom,
                                 width: 370,
@@ -131,9 +131,9 @@ export default class PostListingScreen extends React.Component {
                 console.log(firebaseuser)
 
                 this.setState({
-                    user: firebaseuser.user
+                    user: firebaseuser.user._user
                 });
-                global.user = firebaseuser.user;
+                global.user = firebaseuser.user._user;
 
                 // Create a new user in our users firebase table
                 this.createUserEntry();
@@ -199,13 +199,11 @@ const styles = StyleSheet.create({
     // backgroundColor: colorCodes.lightGreyCustom,
     borderBottomWidth: 0,
   },
-  postButton: {
-    position: 'absolute',
-    bottom: 25,
+  button: {
+    marginTop: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   ImageContainer: {
       borderRadius: 5,
       width: 200,
