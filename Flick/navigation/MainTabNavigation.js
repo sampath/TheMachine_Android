@@ -14,13 +14,6 @@ import AlertsScreen from '../screens/AlertsScreen';
 
 export default createBottomTabNavigator(
     {
-        Profile: {
-            screen: ProfileScreen,
-            navigationOptions: {
-                label: '',
-                tabBarIcon: ({tintColor}) => <Icon name='accessibility' color={tintColor} />
-            },
-        },
         Home: {
             screen: HomeScreen,
             navigationOptions: {
@@ -34,6 +27,13 @@ export default createBottomTabNavigator(
                 label: '',
                 tabBarIcon: ({tintColor}) => <Icon name='notifications-active' color={tintColor} />
             }
+        },
+        Profile: {
+            screen: ProfileScreen,
+            navigationOptions: {
+                label: '',
+                tabBarIcon: ({tintColor}) => <Icon name='accessibility' color={tintColor} />
+            },
         }
     },
     {

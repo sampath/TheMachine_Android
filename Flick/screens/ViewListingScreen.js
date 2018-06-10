@@ -45,7 +45,7 @@ export default class ViewListingScreen extends React.Component {
     }
 
     checkIfInterested() {
-        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ this.state.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
+        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingID +'&renterID='+ global.user.uid +'&closed=false', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -365,10 +365,11 @@ class InterestedButton extends React.Component {
         // Add Alert
         // Get transaction id
         transactionIDpromise.then((transactionid) => {
+            console.log("we here four");
             var alertBody = {
-                content: 'Interested',
+                content: 'A user is interested in ' + listingInfo.itemName,
                 transactionID: transactionid,
-                listingID: listingInfo.key,
+                listingID: listingID,
             };
 
             var form = [];
@@ -378,7 +379,6 @@ class InterestedButton extends React.Component {
                 form.push(encodedKey + "=" + encodedValue);
             }
             form = form.join("&");
-
 
             fetch('https://flick-prod.herokuapp.com/alerts/' + listingInfo.ownerID, {
                 method: 'POST',
@@ -409,7 +409,8 @@ class InterestedButton extends React.Component {
             <ActionButton 
                 buttonColor={colorCodes.mintCustom}
                 onPress={() => {
-                    var url = 'https://flick-prod.herokuapp.com/transactions/transactionID/' + '?listingID=' + listingInfo.key + "&renterID=" + global.user._user.uid + "&closed=false";
+                    var url = 'https://flick-prod.herokuapp.com/transactions/transactionID/?listingID=' + listingID + "&renterID=" + global.user._user.uid + "&closed=false";
+                    console.log(url);
                     var transactionIDpromise = this.fetchTransactionID(url);
                     this.showInterest(transactionIDpromise)
                 }
@@ -439,6 +440,34 @@ class NotInterestedButton extends React.Component {
     }
     
     reverseInterest() {
+        fetch('https://flick-prod.herokuapp.com/transactions/transactionID/?listingID=' + listingID + '&renterID=' + global.user.uid + '&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            
+            // Using the found transaction id, delete the transaction
+            fetch('https://flick-prod.herokuapp.com/transactions/transactionID/?listingID=' + listingID + '&renterID=' + global.user.uid + '&closed=false', {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => response.json())
+            .then((response) => {
+                
+                
+            })
+            .done();
+
+
+        })
+        .done();
     }
 }
 
