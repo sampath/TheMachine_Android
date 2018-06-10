@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     height: 70,
   },
   buttonWrap: {
-    marginTop: '25%',
   },
   logoStyle: {
     marginTop: '5%',
