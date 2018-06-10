@@ -24,6 +24,7 @@ import ActionButton from 'react-native-action-button';
 
 var listingID;
 var listingInfo;
+var isInterested;
 
 export default class ViewListingScreen extends React.Component {
     constructor(props) {
@@ -41,25 +42,8 @@ export default class ViewListingScreen extends React.Component {
                 tags: '',
             },
             isInterested: false,
+            loading: true,
         };
-    }
-
-    checkIfInterested() {
-        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingID +'&renterID='+ global.user.uid +'&closed=false', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response);
-            this.setState({
-                isInterested: response
-            });
-        })
-        .done();
     }
 
     getListingData() {
@@ -72,17 +56,17 @@ export default class ViewListingScreen extends React.Component {
         })
         .then((response) => response.json())
         .then((response) => {
-            console.log(response);
-            this.setState({
-                listingInfo: response
-            });
             listingInfo = response;
+            this.setState({
+                listingInfo: response,
+                loading: false,
+            });
         })
         .done();
     }
 
     componentDidMount() {
-        this.checkIfInterested();
+        // this.checkIfInterested();
         this.getListingData();
     }
 
@@ -95,24 +79,24 @@ export default class ViewListingScreen extends React.Component {
     }
 
     render() {
-        var interestedComponent;
 
         const { listingInfo, listingID } = this.state;
         DeleteButton=<Text></Text>;
         EditButton= <Text></Text>;
 
         if (global.user.uid === listingInfo.ownerID) {
-            interestedComponent = <InterestedList />;
+            // interestedComponent = <InterestedList />;
             DeleteButton = <Icon 
                                 type='ionicon' 
                                 name='md-trash' 
                                 color='#000'
-                                onPress={() => this.deleteListing()}/>
+                                onPress={() => this.deleteListing()}
+                            />
  
-        } else if (!this.state.isInterested) {
-            interestedComponent = <InterestedButton />;
-        } else {
-            interestedComponent = <NotInterestedButton />;
+        }
+
+        if (this.state.loading) {
+            return null
         }
 
         return (
@@ -193,11 +177,67 @@ export default class ViewListingScreen extends React.Component {
                     </View>
                 </View>
 
-                {interestedComponent}
+                <InterestedComponent />
 
             </View>
         );
-  }
+    }
+}
+
+class InterestedComponent extends React.Component {
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            isInterested: false
+        };
+
+        this.parentState = this.parentState.bind(this)
+    }
+
+    render() {
+        console.log("Rendering interestedComponent", isInterested)
+        if (global.user.uid === listingInfo.ownerID) {
+            return <InterestedList />;
+        } else if (!isInterested) {
+            return <InterestedButton updater={this.parentState}/>;
+        } else {
+            return <NotInterestedButton updater={this.parentState}/>;
+        }
+    }
+
+    parentState(updateInterest) {
+        this.setState({
+            isInterested: updateInterest,
+        })
+    }
+
+
+    componentDidMount() {
+        this.setState({
+            isInterested: isInterested
+        })
+        this.checkIfInterested();
+    }
+
+    checkIfInterested() {
+        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingID +'&renterID='+ global.user.uid +'&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            isInterested = response;
+            this.setState({
+                isInterested: response
+            });
+        })
+        .done();
+    }
 }
 
 class InterestedList extends React.Component {
@@ -275,9 +315,7 @@ class InterestedList extends React.Component {
                     })
                     .done();
                 }
-            }
-
-          
+            } 
         })
         .done();
     }
@@ -338,6 +376,13 @@ class InterestedList extends React.Component {
 }
 
 class InterestedButton extends React.Component {
+
+    constructor(props) {
+        super(props);
+    
+        console.log(props);
+    }
+
     showInterest(transactionIDpromise) {
         var transactionData = {
             listingID: listingID,
@@ -391,6 +436,9 @@ class InterestedButton extends React.Component {
             .done()
         }).done();
 
+        isInterested = true;
+        this.props.updater(isInterested);
+
     }
 
     fetchTransactionID(url) {
@@ -410,11 +458,9 @@ class InterestedButton extends React.Component {
                 buttonColor={colorCodes.mintCustom}
                 onPress={() => {
                     var url = 'https://flick-prod.herokuapp.com/transactions/transactionID/?listingID=' + listingID + "&renterID=" + global.user._user.uid + "&closed=false";
-                    console.log(url);
                     var transactionIDpromise = this.fetchTransactionID(url);
                     this.showInterest(transactionIDpromise)
-                }
-                }
+                }}
                 buttonTextStyle={{
                     color: 'black',
                 }}
@@ -426,17 +472,10 @@ class InterestedButton extends React.Component {
 
 class NotInterestedButton extends React.Component {
 
-    render() {
-        return (
-            <ActionButton 
-                buttonColor={colorCodes.mintCustom}
-                onPress={this.reverseInterest}
-                buttonTextStyle={{
-                    color: 'black',
-                }}
-                renderIcon={() => <Icon type='material-community' name='heart-off'/>}
-            />
-        );
+    constructor(props) {
+        super(props);
+    
+        console.log(props);
     }
     
     reverseInterest() {
@@ -468,6 +507,22 @@ class NotInterestedButton extends React.Component {
 
         })
         .done();
+
+        isInterested = false;
+        this.props.updater(false);
+    }
+
+    render() {
+        return (
+            <ActionButton 
+                buttonColor={colorCodes.mintCustom}
+                onPress={() => {this.reverseInterest()}}
+                buttonTextStyle={{
+                    color: 'black',
+                }}
+                renderIcon={() => <Icon type='material-community' name='heart-off'/>}
+            />
+        );
     }
 }
 

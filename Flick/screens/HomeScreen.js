@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
                             if (text == '') {
                                 this.setState({searchText: ''});
                             } else {
-                                this.setState({searchText: text});
+                                this.setState({searchText: 'filter/?searchWords=' + text});
                             }    
                         }}
                         onSubmitEditing={(event) => {
@@ -112,7 +112,7 @@ export default class HomeScreen extends React.Component {
 
     // Uses GET request to query all listing data
     getAllListings() {
-        fetch('https://flick-prod.herokuapp.com/listings/?searchWords=' + this.state.searchText, {
+        fetch('https://flick-prod.herokuapp.com/listings/' + this.state.searchText, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
