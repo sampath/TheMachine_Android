@@ -340,7 +340,7 @@ class InterestedList extends React.Component {
 class InterestedButton extends React.Component {
     showInterest(transactionIDpromise) {
         var transactionData = {
-            listingID: listingInfo.key,
+            listingID: listingID,
             ownerID: listingInfo.ownerID,
             renterID: global.user._user.uid,
             price: listingInfo.price,
