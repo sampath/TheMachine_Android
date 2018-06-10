@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
                             if (text == '') {
                                 this.setState({searchText: ''});
                             } else {
-                                this.setState({searchText: 'keyword/' + text});
+                                this.setState({searchText: 'filter/?searchWords=' + text});
                             }    
                         }}
                         onSubmitEditing={(event) => {
