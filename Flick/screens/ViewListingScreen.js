@@ -62,14 +62,30 @@ export default class ViewListingScreen extends React.Component {
         this.checkIfInterested();
     }
 
+    deleteListing(){
+        fetch('https://flick-prod.herokuapp.com/listings/'+listingInfo.key, {
+            method: 'delete',
+        })
+        .done()
+        this.props.navigation.goBack(null);
+    }
+
     render() {
         var interestedComponent;
         listingInfo = this.props.navigation.state.params.listingInfo;
 
         if (global.user.uid === listingInfo.ownerID) {
             interestedComponent = <InterestedList />;
+            DeleteButton = <Icon 
+                                type='ionicon' 
+                                name='md-trash' 
+                                color='#000'
+                                onPress={() => this.deleteListing()}/>
+ 
         } else if (!this.state.isInterested) {
             interestedComponent = <InterestedButton />;
+            DeleteButton=<Text></Text>;
+            EditButton= <Text></Text>;
         }
 
 
@@ -92,6 +108,7 @@ export default class ViewListingScreen extends React.Component {
                             fontSize: 20,
                         } 
                     }}
+                    rightComponent={DeleteButton}
                 />
 
                 <View style={styles.listingBody}>
