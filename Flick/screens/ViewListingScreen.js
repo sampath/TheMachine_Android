@@ -3,6 +3,7 @@ import {
     Image,
     Platform,
     FlatList,
+    ScrollView,
     StyleSheet,
     TouchableOpacity,
     TouchableHighlight,
@@ -39,7 +40,7 @@ export default class ViewListingScreen extends React.Component {
                 pictureURL: '',
                 avgRating: '',
                 description: '',
-                tags: '',
+                // tags: '',
             },
             isInterested: false,
             loading: true,
@@ -71,8 +72,16 @@ export default class ViewListingScreen extends React.Component {
     }
 
     deleteListing(){
-        fetch('https://flick-prod.herokuapp.com/listings/'+listingInfo.key, {
-            method: 'delete',
+        const listing = listingID
+        fetch('https://flick-prod.herokuapp.com/listings/'+listing, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(() => {
+            console.log(listing);
         })
         .done()
         this.props.navigation.goBack(null);
@@ -85,7 +94,6 @@ export default class ViewListingScreen extends React.Component {
         EditButton= <Text></Text>;
 
         if (global.user.uid === listingInfo.ownerID) {
-            // interestedComponent = <InterestedList />;
             DeleteButton = <Icon 
                                 type='ionicon' 
                                 name='md-trash' 
@@ -121,7 +129,7 @@ export default class ViewListingScreen extends React.Component {
                     rightComponent={DeleteButton}
                 />
 
-                <View style={styles.listingBody}>
+                <ScrollView style={styles.listingBody}>
 
                     <View style={styles.listingPic}>
                         <Image
@@ -168,14 +176,14 @@ export default class ViewListingScreen extends React.Component {
                             {listingInfo.description}
                         </Text>
 
-                        <Text h4 style={styles.titles}>
+                        {/*<Text h4 style={styles.titles}>
                             Tags:
                         </Text>
                         <Text h5 style={[styles.subText,]}>
                             {listingInfo.tags}
-                        </Text>
+                        </Text>*/}
                     </View>
-                </View>
+                </ScrollView>
 
                 <InterestedComponent />
 
@@ -332,7 +340,7 @@ class InterestedList extends React.Component {
                     <ListItem
                         roundAvatar
                         title={'Name: ' + item.name}
-                        subtitle={'Email: ' + item.email}
+                        subtitle={'Email: ' + item.email + '\n' + 'Phone:' + item.phoneNumber}
                         onPress={() => {
 
                             Alert.alert(
@@ -496,11 +504,6 @@ class NotInterestedButton extends React.Component {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-            })
-            .then((response) => response.json())
-            .then((response) => {
-                
-                
             })
             .done();
 

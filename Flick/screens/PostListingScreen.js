@@ -40,7 +40,7 @@ export default class PostListingScreen extends React.Component {
             var data = {
                 'ownerID': global.user.uid,
                 'itemName': this.state.name,
-                'tags': this.state.tags,
+                // 'tags': this.state.tags,
                 'price': this.state.price,
                 'description': this.state.descr,
                 'picturePath': this.state.imageData,
@@ -63,7 +63,12 @@ export default class PostListingScreen extends React.Component {
                 body: formBody
             })
             .done()
+
+            console.log(this.props.navigation.state.params);
+
+            this.props.navigation.state.params.forceReRender();
             this.props.navigation.goBack(null)
+
 
         } else {Alert.alert('Invalid Input')}
     }

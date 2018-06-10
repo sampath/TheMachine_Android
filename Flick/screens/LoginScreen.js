@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     View,
+    Alert,
 } from 'react-native';
 import { 
     Button,
@@ -24,10 +25,6 @@ export default class LoginScreen extends React.Component {
             password: '',
         };
     }
-                // <Image
-                //     style={styles.logoStyle}
-                //     source={require('../img/flick_logo.png')}
-                // />
 
     render() {
         return (
@@ -92,28 +89,11 @@ export default class LoginScreen extends React.Component {
 
             global.user = firebaseuser.user._user;
 
-            // getUserData(global.user.uid)
-            // .then((data) => {
-            //     global.userData = data;
-            // });
-
-            // fetch('https://flick-prod.herokuapp.com/users/' + global.user.uid, {
-            //     method: 'GET',
-            //     headers: {
-            //         Accept: 'application/json',
-            //         'Content-Type': 'application/json',
-            //     },
-            // })
-            // .then((response) => response.json())
-            // .then((response) => {
-            //     global.userData = response;
-            // })
-            // .done();
-
         })
         .catch((err) => {
             // If an error occurs, capture and log the message
             const { code, message } = err;
+            Alert.alert(code, message);
             console.log(code, message);
         })
     }
@@ -121,9 +101,6 @@ export default class LoginScreen extends React.Component {
     getUser() {
 
     }
-
-
-
 
 }
 
