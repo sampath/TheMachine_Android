@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {
     Header,
+    Icon,
     Divider,
     Avatar,
     Rating,
@@ -33,20 +34,6 @@ export default class ProfileScreen extends React.Component {
         this.updateIndex = this.updateIndex.bind(this);
     }
 
- // A simple separator to separate listings in the view
-    renderSeparator() {
-        return (
-            <View
-                style={{
-                    height: 1,
-                    width: "86%",
-                    backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
-                }}
-            />
-        )
-    };
-
     render() {
         const buttons = ['Active', 'Past']
         const { selectedIndex } = this.state
@@ -55,7 +42,8 @@ export default class ProfileScreen extends React.Component {
     
         return (
             <View style={styles.container}>
-                <Header backgroundColor={colorCodes.mintCustom}
+                <Header outerContainerStyles={styles.flickHeader}
+                    backgroundColor={colorCodes.mintCustom}
                     centerComponent={{ 
                         text: global.userData.name, 
                         style: { 
@@ -64,12 +52,8 @@ export default class ProfileScreen extends React.Component {
                         } 
                     }}
                     rightComponent={
-                        <Button 
+                        <Icon type='material-community' name='logout'
                             onPress={this.onSignOut.bind(this)}
-                            title='Logout'
-                            style={{
-                                marginLeft: 0,
-                            }}
                         />
                     }
                 />
@@ -112,7 +96,7 @@ export default class ProfileScreen extends React.Component {
                             leftAvatar={{ source: {uri: item.pictureURL} }}
                             onPress={() => this.props.navigation.navigate(
                                 'ViewListing', 
-                                {listingInfo: item}
+                                {listingID: item.key}
                             )}
 
                         />
@@ -124,13 +108,28 @@ export default class ProfileScreen extends React.Component {
         );
     }
 
+    // A simple separator to separate listings in the view
+    renderSeparator() {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: "86%",
+                    backgroundColor: "#CED0CE",
+                    marginLeft: "14%"
+                }}
+            />
+        )
+    };
+
+
     componentDidMount() {
         this.getUserListings();
     }
 
     // Uses GET request to query all listing data
     getUserListings() {
-        console.log(global.user._user.uid);
+        console.log(global.user.uid);
         fetch('https://flick-prod.herokuapp.com/listings/user/' + global.user._user.uid + '/', {
             method: 'GET',
             headers: {
@@ -153,7 +152,6 @@ export default class ProfileScreen extends React.Component {
 
                 this.setState({
                     listingData: dataArray,
-
                 });
             }
         })
@@ -169,6 +167,8 @@ export default class ProfileScreen extends React.Component {
     async onSignOut() {
         firebase.auth().signOut()
         .then(() => {
+            global.user = null;
+            global.userData = null;
             console.log("Logged out");
         })
         .catch((e) => {

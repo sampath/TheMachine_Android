@@ -101,7 +101,7 @@ export default class PostListingScreen extends React.Component {
 
                     <View style={styles.button}>
                         <Button 
-                            title='Register'
+                            title='Register and Login'
                             onPress={() => {this.onRegister()}}
                             titleStyle={{
                                 color:'black',
@@ -188,14 +188,14 @@ const styles = StyleSheet.create({
   bodyStyle: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 25
+    marginTop: '2%'
   },
   textInputView: {
     alignItems: 'center',
     marginTop: 15,
   },
   textInput: {
-    marginBottom: 15,
+    marginBottom: '1.5%',
     // backgroundColor: colorCodes.lightGreyCustom,
     borderBottomWidth: 0,
   },

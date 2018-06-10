@@ -57,21 +57,23 @@ export default class App extends Component<Props> {
                 user,
             });
 
-            fetch('https://flick-prod.herokuapp.com/users/' + user._user.uid, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-                this.setState({
-                    userData: response
-                });
-            })
-            .done();
+            if (user) {
+                fetch('https://flick-prod.herokuapp.com/users/' + user._user.uid, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    console.log(response);
+                    this.setState({
+                        userData: response
+                    });
+                })
+                .done();
+            }
         })
     }
     
