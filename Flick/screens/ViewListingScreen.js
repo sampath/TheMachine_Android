@@ -451,8 +451,8 @@ class NotInterestedButton extends React.Component {
         .then((response) => {
             
             // Using the found transaction id, delete the transaction
-            fetch('https://flick-prod.herokuapp.com/transactions/transactionID/?listingID=' + listingID + '&renterID=' + global.user.uid + '&closed=false', {
-                method: 'GET',
+            fetch('https://flick-prod.herokuapp.com/transactions/' + response, {
+                method: 'DELETE',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
