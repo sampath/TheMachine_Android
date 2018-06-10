@@ -14,18 +14,18 @@ import AlertsScreen from '../screens/AlertsScreen';
 
 export default createBottomTabNavigator(
     {
-        Home: {
-            screen: HomeScreen,
-            navigationOptions: {
-                label: '',
-                tabBarIcon: ({tintColor}) => <Icon name='home' color={tintColor} />
-            },
-        },
         Profile: {
             screen: ProfileScreen,
             navigationOptions: {
                 label: '',
                 tabBarIcon: ({tintColor}) => <Icon name='accessibility' color={tintColor} />
+            },
+        },
+        Home: {
+            screen: HomeScreen,
+            navigationOptions: {
+                label: '',
+                tabBarIcon: ({tintColor}) => <Icon name='home' color={tintColor} />
             },
         },
         Alerts: {

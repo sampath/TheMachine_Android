@@ -31,12 +31,15 @@ export default class App extends Component<Props> {
 
     render() {
         global.user = this.state.user;
+        global.userData = this.state.userData;
 
         // If the user state hasn't been determined
         if (this.state.loading) return null;
 
         // If the user is logged in
-        if (this.state.user) return <RootNavigation props={this.state.user}/>;
+        if (this.state.user && !this.state.user.error) {
+            return <RootNavigation props={this.state.user}/>;
+        }
 
         // If the user isn't logged in
         return <LoginNavigation />;
@@ -53,7 +56,23 @@ export default class App extends Component<Props> {
                 loading: false,
                 user,
             });
-        });
+
+            fetch('https://flick-prod.herokuapp.com/users/' + user._user.uid, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response);
+                this.setState({
+                    userData: response
+                });
+            })
+            .done();
+        })
     }
     
     /**

@@ -53,10 +53,19 @@ export default class LoginScreen extends React.Component {
                     onChangeText={(password) => this.setState({password})}
                 />
 
-                <Button style={styles.loginButton} 
-                    onPress={this.onLogin.bind(this)}
-                    title='Login'
-                />
+                <View style={styles.button}>
+                    <Button style={styles.loginButton} 
+                        title='Login'
+                        onPress={this.onLogin.bind(this)}
+                        titleStyle={{
+                            color:'black',
+                        }}
+                        buttonStyle={{
+                            backgroundColor: colorCodes.mintCustom,
+                            width: 370,
+                        }}
+                    />
+                </View>
 
                 <TouchableOpacity style={styles.buttonWrap} 
                     onPress={() => this.props.navigation.navigate('Register')}
@@ -78,16 +87,39 @@ export default class LoginScreen extends React.Component {
         .then((firebaseuser) => {
             console.log(firebaseuser);
             this.setState({
-                user: firebaseuser.user
+                user: firebaseuser.user._user
             });
 
-            global.user = firebaseuser.user;
+            global.user = firebaseuser.user._user;
+
+            // getUserData(global.user.uid)
+            // .then((data) => {
+            //     global.userData = data;
+            // });
+
+            // fetch('https://flick-prod.herokuapp.com/users/' + global.user.uid, {
+            //     method: 'GET',
+            //     headers: {
+            //         Accept: 'application/json',
+            //         'Content-Type': 'application/json',
+            //     },
+            // })
+            // .then((response) => response.json())
+            // .then((response) => {
+            //     global.userData = response;
+            // })
+            // .done();
+
         })
         .catch((err) => {
             // If an error occurs, capture and log the message
             const { code, message } = err;
             console.log(code, message);
         })
+    }
+
+    getUser() {
+
     }
 
 
@@ -106,10 +138,10 @@ const styles = StyleSheet.create({
     height: 70,
   },
   buttonWrap: {
-    marginTop: 90,
+    marginTop: '25%',
   },
   logoStyle: {
-    marginTop: 50,
+    marginTop: '5%',
     width: 200,
     height: 200,
   },
@@ -119,14 +151,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   titleStyle: {
-    marginTop: 5,
+    marginTop: '1%',
     fontSize: 50,
     fontWeight: '100'
   },
   subStyle: {
-    marginTop: 2,
-    marginBottom: 10,
+    marginTop: '.5%',
+    marginBottom: '3%',
     fontSize: 20,
     fontWeight: '200'
+  },
+  button: {
+    marginTop: '2%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

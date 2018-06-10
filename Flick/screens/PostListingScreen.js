@@ -38,7 +38,7 @@ export default class PostListingScreen extends React.Component {
         console.log(valid)
         if (valid) {
             var data = {
-                'ownerID': global.user._user.uid,
+                'ownerID': global.user.uid,
                 'itemName': this.state.name,
                 'tags': this.state.tags,
                 'price': this.state.price,

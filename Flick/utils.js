@@ -1,6 +1,6 @@
 import React from 'react';
 
-const postRequest = (url, formData) => {
+const postRequest = async (url, formData) => {
     var formBody = [];
     for ( var property in formData) {
         var encodedKey = encodeURIComponent(property);
@@ -21,8 +21,4 @@ const postRequest = (url, formData) => {
     .done();
 }
 
-const getRequest = (url) => {
-    return null;
-}
-
-export { postRequest, getRequest };
+export { postRequest, };

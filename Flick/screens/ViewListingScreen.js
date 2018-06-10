@@ -66,7 +66,7 @@ export default class ViewListingScreen extends React.Component {
         var interestedComponent;
         listingInfo = this.props.navigation.state.params.listingInfo;
 
-        if (global.user._user.uid === listingInfo.ownerID) {
+        if (global.user.uid === listingInfo.ownerID) {
             interestedComponent = <InterestedList />;
         } else if (!this.state.isInterested) {
             interestedComponent = <InterestedButton />;
@@ -244,7 +244,6 @@ class InterestedList extends React.Component {
     }
 
     render() {
-        console.log(this.state.interestedUsers);
         return (
             <FlatList
                 data={this.state.interestedUsers}
@@ -297,6 +296,19 @@ class InterestedList extends React.Component {
 
 class InterestedButton extends React.Component {
 
+    render() {
+        return (
+            <ActionButton 
+                buttonColor={colorCodes.mintCustom}
+                onPress={this.showInterest}
+                buttonTextStyle={{
+                    color: 'black',
+                }}
+                renderIcon={() => <Icon type='ionicon' name='md-heart'/>}
+            />
+        );
+    }
+    
     showInterest() {
         var transactionData = {
             listingID: listingInfo.key,
@@ -322,18 +334,6 @@ class InterestedButton extends React.Component {
         .done()
     }
 
-    render() {
-        return (
-            <ActionButton 
-                buttonColor={colorCodes.mintCustom}
-                onPress={this.showInterest}
-                buttonTextStyle={{
-                    color: 'black',
-                }}
-                renderIcon={() => <Icon type='ionicon' name='md-heart'/>}
-            />
-        );
-    }
 }
 
 const styles = StyleSheet.create({
