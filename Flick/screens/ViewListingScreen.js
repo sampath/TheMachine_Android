@@ -296,20 +296,7 @@ class InterestedList extends React.Component {
 
 class InterestedButton extends React.Component {
 
-    render() {
-        return (
-            <ActionButton 
-                buttonColor={colorCodes.mintCustom}
-                onPress={this.showInterest}
-                buttonTextStyle={{
-                    color: 'black',
-                }}
-                renderIcon={() => <Icon type='ionicon' name='md-heart'/>}
-            />
-        );
-    }
-    
-    showInterest() {
+    showInterest(transactionIDpromise) {
         var transactionData = {
             listingID: listingInfo.key,
             ownerID: listingInfo.ownerID,
@@ -332,8 +319,71 @@ class InterestedButton extends React.Component {
             body: formBody
         })
         .done()
+
+        // Add Alert
+        // Get transaction id
+        transactionIDpromise.then((transactionid) => {
+            console.log("Made it here transaction id: " + transactionid);
+
+            var alertBody = {
+                content: 'Interested',
+                transactionID: transactionid,
+                listingID: listingInfo.key,
+            };
+
+            var form = [];
+            for (var property in alertBody) {
+                var encodedKey = encodeURIComponent(property);
+                var encodedValue = encodeURIComponent(alertBody[property]);
+                form.push(encodedKey + "=" + encodedValue);
+            }
+            form = form.join("&");
+
+            console.log("id", listingInfo.ownerID, "fb", form);
+
+
+            fetch('https://flick-prod.herokuapp.com/alerts/' + listingInfo.ownerID, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                //need to post transaction id and listing id 
+                body: form
+            })
+            .done()
+        }).done();
+
     }
 
+
+    fetchTransactionID(url) {
+        return fetch(url, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response=> response.json())
+    }
+
+    render() {
+        return(
+            <ActionButton 
+                buttonColor={colorCodes.mintCustom}
+                onPress={() => {
+                    var url = 'https://flick-prod.herokuapp.com/transactions/transactionID/' + '?listingID=' + listingInfo.key + "&renterID=" + global.user._user.uid + "&closed=false";
+                    var transactionIDpromise = this.fetchTransactionID(url);
+                    this.showInterest(transactionIDpromise)
+                }
+                }
+                buttonTextStyle={{
+                    color: 'black',
+                }}
+                renderIcon={() => <Icon type='ionicon' name='md-heart'/>}
+            />
+        );
+    }
 }
 
 const styles = StyleSheet.create({
