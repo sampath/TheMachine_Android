@@ -22,44 +22,68 @@ import {
 } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 
+var listingID;
 var listingInfo;
 
 export default class ViewListingScreen extends React.Component {
     constructor(props) {
         super(props);
     
+        listingID = this.props.navigation.state.params.listingID;
+
         this.state = {
-            listingData: [],
+            listingID: this.props.navigation.state.params.listingID,
+            listingInfo: {
+                ownerID: '',
+                pictureURL: '',
+                avgRating: '',
+                description: '',
+                tags: '',
+            },
             isInterested: false,
         };
     }
 
     checkIfInterested() {
-        // fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ listingInfo.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
-        //     method: 'GET',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        // })
-        // .then((response) => response.json())
-        // .then((response) => {
+        fetch('http://flick-prod.herokuapp.com/transactions/?check=true&listingID='+ this.state.listingID +'&renterID='+ global.user._user.uid +'&closed=false', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+            this.setState({
+                isInterested: response
+            });
+        })
+        .done();
+    }
 
-        //     console.log(response);
-        //     this.setState({
-        //         isInterested: response
-        //     });
-
-        //     // console.log(this.state.listingData);
-        // })
-        // .done();
-        this.setState({
-            isInterested: false
-        });
+    getListingData() {
+        fetch('http://flick-prod.herokuapp.com/listings/'+ this.state.listingID, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+            this.setState({
+                listingInfo: response
+            });
+            listingInfo = response;
+        })
+        .done();
     }
 
     componentDidMount() {
         this.checkIfInterested();
+        this.getListingData();
     }
 
     deleteListing(){
@@ -72,7 +96,10 @@ export default class ViewListingScreen extends React.Component {
 
     render() {
         var interestedComponent;
-        listingInfo = this.props.navigation.state.params.listingInfo;
+
+        const { listingInfo, listingID } = this.state;
+        DeleteButton=<Text></Text>;
+        EditButton= <Text></Text>;
 
         if (global.user.uid === listingInfo.ownerID) {
             interestedComponent = <InterestedList />;
@@ -84,10 +111,9 @@ export default class ViewListingScreen extends React.Component {
  
         } else if (!this.state.isInterested) {
             interestedComponent = <InterestedButton />;
-            DeleteButton=<Text></Text>;
-            EditButton= <Text></Text>;
+        } else {
+            interestedComponent = <NotInterestedButton />;
         }
-
 
         return (
             <View style={styles.container}>
@@ -140,14 +166,14 @@ export default class ViewListingScreen extends React.Component {
                                 Rating:
                             </Text>
                             <Rating
+                                readonly
                                 style={{
                                     paddingTop: 10,
                                     paddingLeft: 10,
                                 }}
                                 fractions={1}
                                 imageSize={25}
-                                startingValue={listingInfo.avgRating}
-                                readonly
+                                startingValue={parseInt(listingInfo.avgRating)}
                             />
                         </View>
 
@@ -200,7 +226,7 @@ class InterestedList extends React.Component {
     };
 
     getInterestedUsers() {
-        fetch('https://flick-prod.herokuapp.com/transactions/?listingID=' + listingInfo.key + '&closed=false', {
+        fetch('https://flick-prod.herokuapp.com/transactions/?listingID=' + listingID + '&closed=false', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -280,7 +306,7 @@ class InterestedList extends React.Component {
                                         console.log('Renter Confirmed');
                                         var data = {
                                             renterID: item.key,
-                                            listingID: listingInfo.key,
+                                            listingID: this.props.listingInfo.key,
                                         };
 
                                         var formBody = [];
@@ -312,10 +338,9 @@ class InterestedList extends React.Component {
 }
 
 class InterestedButton extends React.Component {
-
     showInterest(transactionIDpromise) {
         var transactionData = {
-            listingID: listingInfo.key,
+            listingID: listingID,
             ownerID: listingInfo.ownerID,
             renterID: global.user._user.uid,
             price: listingInfo.price,
@@ -340,8 +365,6 @@ class InterestedButton extends React.Component {
         // Add Alert
         // Get transaction id
         transactionIDpromise.then((transactionid) => {
-            console.log("Made it here transaction id: " + transactionid);
-
             var alertBody = {
                 content: 'Interested',
                 transactionID: transactionid,
@@ -355,8 +378,6 @@ class InterestedButton extends React.Component {
                 form.push(encodedKey + "=" + encodedValue);
             }
             form = form.join("&");
-
-            console.log("id", listingInfo.ownerID, "fb", form);
 
 
             fetch('https://flick-prod.herokuapp.com/alerts/' + listingInfo.ownerID, {
@@ -372,7 +393,6 @@ class InterestedButton extends React.Component {
 
     }
 
-
     fetchTransactionID(url) {
         return fetch(url, {
             method: 'GET',
@@ -381,7 +401,7 @@ class InterestedButton extends React.Component {
                 'Content-Type': 'application/json',
             },
         })
-        .then(response=> response.json())
+        .then(response => response.json())
     }
 
     render() {
@@ -400,6 +420,25 @@ class InterestedButton extends React.Component {
                 renderIcon={() => <Icon type='ionicon' name='md-heart'/>}
             />
         );
+    }
+}
+
+class NotInterestedButton extends React.Component {
+
+    render() {
+        return (
+            <ActionButton 
+                buttonColor={colorCodes.mintCustom}
+                onPress={this.reverseInterest}
+                buttonTextStyle={{
+                    color: 'black',
+                }}
+                renderIcon={() => <Icon type='material-community' name='heart-off'/>}
+            />
+        );
+    }
+    
+    reverseInterest() {
     }
 }
 

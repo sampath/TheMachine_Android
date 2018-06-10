@@ -41,7 +41,7 @@ export default class HomeScreen extends React.Component {
                         platform='android'
                         placeholder='Type Here...' 
                         onChangeText={(text) => {
-                            if (text == null) {
+                            if (text == '') {
                                 this.setState({searchText: ''});
                             } else {
                                 this.setState({searchText: 'keyword/' + text});
@@ -71,7 +71,7 @@ export default class HomeScreen extends React.Component {
                             leftAvatar={{ source: {uri: item.pictureURL} }}
                             onPress={() => this.props.navigation.navigate(
                                 'ViewListing', 
-                                {listingInfo: item}
+                                {listingID: item.key}
                             )}
 
                         />

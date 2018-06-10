@@ -24,14 +24,14 @@ export default class LoginScreen extends React.Component {
             password: '',
         };
     }
+                // <Image
+                //     style={styles.logoStyle}
+                //     source={require('../img/flick_logo.png')}
+                // />
 
     render() {
         return (
             <View style={styles.container}>
-                <Image
-                    style={styles.logoStyle}
-                    source={require('../img/flick_logo.png')}
-                />
                 <Text style={styles.titleStyle}>flick</Text>
                 <Text style={styles.subStyle}>what you need, when you need it</Text>
                 
