@@ -30,6 +30,57 @@ export default class HomeScreen extends React.Component {
         this.handleRefresh = this.handleRefresh.bind(this)
     }
 
+    render() {
+        return (
+            <View style={styles.container}>
+                <Header backgroundColor={colorCodes.mintCustom}
+                    outerContainerStyles={styles.flickHeader}>
+                    <Icon name='filter-list'/>
+                    <SearchBar style={styles.searchBar}
+                        platform='android'
+                        placeholder='Type Here...' 
+                        // onSubmitEditing={(text) => handleSearchText(text)}
+                        containerStyle={{
+                            backgroundColor: colorCodes.mintCustom,
+                            width: '92%'
+                        }}
+                        inputContainerStyle={{
+                            backgroundColor: '#d0e8dd',
+                        }}
+                    />
+                </Header>
+
+                <FlatList
+                    data={this.state.listingData}
+                    renderItem={({item}) => (
+                        <ListItem
+                            // roundAvatar
+                            title={item.itemName}
+                            subtitle={item.price}
+                            leftAvatar={{ source: {uri: item.pictureURL} }}
+                            onPress={() => this.props.navigation.navigate(
+                                'ViewListing', 
+                                {listingInfo: item}
+                            )}
+
+                        />
+                    )}
+                    ItemSeparatorComponent={this.renderSeparator}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefresh}
+                />
+                
+                <ActionButton 
+                    buttonColor={colorCodes.mintCustom}
+                    onPress={() => this.props.navigation.navigate('PostListing')}
+                    buttonTextStyle={{
+                        color: 'black',
+                    }}
+                />
+            </View>
+        )
+    }
+
     // A simple separator to separate listings in the view
     renderSeparator() {
         return (
@@ -81,6 +132,16 @@ export default class HomeScreen extends React.Component {
         .done();
     }
 
+    handleSearchText(searchVal) {
+        fetch('https://flick-prod.herokuapp.com/test/listings/', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: searchVal
+        })
+    }
+
     handleRefresh() {
         // this.setState({
         //     refreshing: true
@@ -93,56 +154,6 @@ export default class HomeScreen extends React.Component {
         this.getAllListings();
     }
 
-    render() {
-        console.log(this.state.listingData);
-        return (
-            <View style={styles.container}>
-                <Header backgroundColor={colorCodes.mintCustom}
-                    outerContainerStyles={styles.flickHeader}>
-                    <Icon name='filter-list'/>
-                    <SearchBar style={styles.searchBar}
-                        platform='android'
-                        placeholder='Type Here...' 
-                        containerStyle={{
-                            backgroundColor: colorCodes.mintCustom,
-                            width: '92%'
-                        }}
-                        inputContainerStyle={{
-                            backgroundColor: '#d0e8dd',
-                        }}
-                    />
-                </Header>
-
-                <FlatList
-                    data={this.state.listingData}
-                    renderItem={({item}) => (
-                        <ListItem
-                            roundAvatar
-                            title={item.itemName}
-                            subtitle={item.price}
-                            leftAvatar={{ source: {uri: item.pictureURL} }}
-                            onPress={() => this.props.navigation.navigate(
-                                'ViewListing', 
-                                {listingInfo: item}
-                            )}
-
-                        />
-                    )}
-                    ItemSeparatorComponent={this.renderSeparator}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.handleRefresh}
-                />
-                
-                <ActionButton 
-                    buttonColor={colorCodes.mintCustom}
-                    onPress={() => this.props.navigation.navigate('PostListing')}
-                    buttonTextStyle={{
-                        color: 'black',
-                    }}
-                />
-            </View>
-        )
-    }
 }
 
 const styles = StyleSheet.create({
