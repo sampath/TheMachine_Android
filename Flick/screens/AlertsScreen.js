@@ -26,7 +26,12 @@ export default class AlertsScreen extends React.Component {
 
         this.state = {
             alertData: [],
+            refreshing: false,
         };
+    }
+
+    handleRefresh() {
+        this.getAllAlerts();
     }
 
     componentDidMount() {
@@ -115,6 +120,7 @@ export default class AlertsScreen extends React.Component {
         return(
             <View style={styles.container}>
             <Header backgroundColor={colorCodes.mintCustom}
+                outerContainerStyles={styles.flickHeader}
                 centerComponent={{
                     text: 'Alerts',
                     style: {
@@ -131,7 +137,6 @@ export default class AlertsScreen extends React.Component {
                         roundAvatar
                         title={item.content}
                         onPress={() => {
-
                             // tart with transaction id
                             var transactionId = item.transactionID;
                             const listingidPromise = this.fetchListingId(transactionId);
@@ -147,6 +152,8 @@ export default class AlertsScreen extends React.Component {
                     />
                 )}
                 ItemSeparatorComponent={this.renderSeparator}
+                refreshing={this.state.refreshing}
+                onRefresh={() => this.handleRefresh}
             />
 
             </View>
@@ -159,5 +166,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    flickHeader: {
+        height: 60
     },
 });

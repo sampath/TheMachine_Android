@@ -25,10 +25,12 @@ export default class HomeScreen extends React.Component {
         this.state = {
             listingData: [],
             refreshing: false,
-            searchText: ''
+            searchText: '',
+            render: false,
         };
 
-        this.handleRefresh = this.handleRefresh.bind(this)
+        this.handleRefresh = this.handleRefresh.bind(this);
+        this.reRender = this.reRender.bind(this);
     }
 
     render() {
@@ -36,7 +38,6 @@ export default class HomeScreen extends React.Component {
             <View style={styles.container}>
                 <Header backgroundColor={colorCodes.mintCustom}
                     outerContainerStyles={styles.flickHeader}>
-                    <Icon name='filter-list'/>
                     <SearchBar style={styles.searchBar}
                         platform='android'
                         placeholder='Type Here...' 
@@ -53,7 +54,7 @@ export default class HomeScreen extends React.Component {
                         }}
                         containerStyle={{
                             backgroundColor: colorCodes.mintCustom,
-                            width: '92%'
+                            width: '100%'
                         }}
                         inputContainerStyle={{
                             backgroundColor: '#d0e8dd',
@@ -62,11 +63,11 @@ export default class HomeScreen extends React.Component {
                 </Header>
 
                 <FlatList
-                    data={this.state.listingData}
+                    data={this.state.listingData.reverse()}
                     renderItem={({item}) => (
                         <ListItem
-                            // roundAvatar
                             title={item.itemName}
+                            extraData={this.state}
                             subtitle={item.price}
                             leftAvatar={{ source: {uri: item.pictureURL} }}
                             onPress={() => this.props.navigation.navigate(
@@ -83,13 +84,19 @@ export default class HomeScreen extends React.Component {
                 
                 <ActionButton 
                     buttonColor={colorCodes.mintCustom}
-                    onPress={() => this.props.navigation.navigate('PostListing')}
+                    onPress={() => this.props.navigation.navigate('PostListing', {forceReRender: this.reRender,})}
                     buttonTextStyle={{
                         color: 'black',
                     }}
                 />
             </View>
         );
+    }
+
+    reRender() {
+        this.setState({
+            render: true
+        });
     }
 
     // A simple separator to separate listings in the view
@@ -141,6 +148,10 @@ export default class HomeScreen extends React.Component {
             console.log(this.state.listingData);
         })
         .done();
+
+        this.setState({
+            render: false,
+        });
     }
 
     // After component renders, get the listing data for the list
