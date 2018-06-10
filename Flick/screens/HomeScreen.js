@@ -78,7 +78,7 @@ export default class HomeScreen extends React.Component {
                     )}
                     ItemSeparatorComponent={this.renderSeparator}
                     refreshing={this.state.refreshing}
-                    onRefresh={() => this.handleRefresh()}
+                    onRefresh={this.handleRefresh}
                 />
                 
                 <ActionButton 
