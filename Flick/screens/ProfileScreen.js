@@ -33,6 +33,20 @@ export default class ProfileScreen extends React.Component {
         this.updateIndex = this.updateIndex.bind(this);
     }
 
+ // A simple separator to separate listings in the view
+    renderSeparator() {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: "86%",
+                    backgroundColor: "#CED0CE",
+                    marginLeft: "14%"
+                }}
+            />
+        )
+    };
+
     render() {
         const buttons = ['Active', 'Past']
         const { selectedIndex } = this.state
@@ -85,21 +99,6 @@ export default class ProfileScreen extends React.Component {
                     </View>
                 </View>
 
-                <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
-
-                <ButtonGroup
-                    onPress={this.updateIndex}
-                    selectedIndex={selectedIndex}
-                    selectedTextStyle={{
-                        fontWeight: 'bold',
-                        color: 'black',
-                    }}
-                    selectedButtonStyle={{
-                        backgroundColor: '#f9f9f9',
-                    }}
-                    buttons={buttons}
-                    containerStyle={{height: 35}}
-                />
 
                 <Divider style={{ backgroundColor: colorCodes.lightGreyCustom, height: 12 }} />
 
@@ -131,7 +130,8 @@ export default class ProfileScreen extends React.Component {
 
     // Uses GET request to query all listing data
     getUserListings() {
-        fetch('https://flick-staging.herokuapp.com/transactions/user/' + '30K4PU1TEvQn2AxnJ8J6uyidlUT2' + '/', {
+        console.log(global.user._user.uid);
+        fetch('https://flick-prod.herokuapp.com/listings/user/' + global.user._user.uid + '/', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -153,6 +153,7 @@ export default class ProfileScreen extends React.Component {
 
                 this.setState({
                     listingData: dataArray,
+
                 });
             }
         })
@@ -174,8 +175,6 @@ export default class ProfileScreen extends React.Component {
             console.log(e);
         })
     }
-
-
 }
 
 const styles = StyleSheet.create({
