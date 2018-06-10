@@ -66,61 +66,6 @@ export default class AlertsScreen extends React.Component {
         
     }
 
-    /*
-    getSingleTransaction(transactionID, callback) {
-        var url = 'https://flick-staging.herokuapp.com/transactions/' + '-LE9yTogvdL_AqXo-FNA';
-        console.log(url);
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((response)=> {
-            let transactionData = response;
-            //console.log('transaction data:');
-            //console.log(transactionData);
-            callback(transactionData);
-        })
-        .done();
-    }
-
-    getListingPage(listingID) {
-        fetch('https://flick-prod.herokuapp.com/listings/' + "-LEAqUJpYD4OQ_7_jJrV", {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            this.props.navigation.navigate( 
-                'ViewListing',
-                {listingInfo: response}
-            );
-        })
-        .done();
-    }
-    */
-   
-    /*
-    async fetchListingId(transactionId) {
-        var url = 'https://flick-staging.herokuapp.com/transactions/' + '-LE9yTogvdL_AqXo-FNA';
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        const data = await response.json();
-        return data.listingID;
-    }
-    */
-
     fetchListingId(transactionId) {
         //var url = 'https://flick-staging.herokuapp.com/transactions/' + '-LE9yTogvdL_AqXo-FNA';
         var url = 'https://flick-staging.herokuapp.com/transactions/' + transactionId;
@@ -147,14 +92,9 @@ export default class AlertsScreen extends React.Component {
                 },
             })
             .then(response => response.json())
-            //.then(data => data)
         })
-            //.then(listing => {
-            //    console.log(listing);
-            //    this.setState({listing:listing});
-            //}); 
+  
     }
-
 
     // Render
     renderSeparator() {
@@ -193,19 +133,16 @@ export default class AlertsScreen extends React.Component {
                         onPress={() => {
 
                             // tart with transaction id
-                            var transactionId = item.transactionId;
+                            var transactionId = item.transactionID;
                             const listingidPromise = this.fetchListingId(transactionId);
-                            //console.log(listingidPromise);
-                            const listingPromise = this.fetchListing(listingidPromise);
-                            //console.log(listingPromise);
-                            listingPromise.then((listingData) => {
-                                //console.log(listingData);
+                            
+                            listingidPromise.then((listingid) => {
                                 this.props.navigation.navigate( 
                                     'ViewListing',
-                                    {listingInfo: listingData}
+                                    {listingID: listingid}
                                 );
-                            });
-                            
+                            })
+                            .done();
                         }}
                     />
                 )}
