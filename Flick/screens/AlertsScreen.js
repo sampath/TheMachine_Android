@@ -35,7 +35,7 @@ export default class AlertsScreen extends React.Component {
 
     // Methods
     getAllAlerts() {
-        let url = 'https://flick-staging.herokuapp.com/alerts/' + global.user._user.uid;
+        let url = 'https://flick-prod.herokuapp.com/alerts/' + global.user._user.uid;
         //console.log(global.user);
         
         fetch(url, {
@@ -68,7 +68,7 @@ export default class AlertsScreen extends React.Component {
 
     fetchListingId(transactionId) {
         //var url = 'https://flick-staging.herokuapp.com/transactions/' + '-LE9yTogvdL_AqXo-FNA';
-        var url = 'https://flick-staging.herokuapp.com/transactions/' + transactionId;
+        var url = 'https://flick-prod.herokuapp.com/transactions/' + transactionId;
         return fetch(url, {
             method: 'GET',
             headers: {
@@ -83,7 +83,7 @@ export default class AlertsScreen extends React.Component {
     fetchListing(promiseWithId) {
         return promiseWithId.then((listingID) => {
             //var url = 'https://flick-staging.herokuapp.com/listings/' + '-LEAqUJpYD4OQ_7_jJrV';
-            var url = 'https://flick-staging.herokuapp.com/listings/' + listingID;
+            var url = 'https://flick-prod.herokuapp.com/listings/' + listingID;
             return fetch(url, {
                 method: 'GET',
                 headers: {
