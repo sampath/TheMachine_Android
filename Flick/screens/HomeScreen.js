@@ -25,6 +25,7 @@ export default class HomeScreen extends React.Component {
         this.state = {
             listingData: [],
             refreshing: false,
+            searchText: ''
         };
 
         this.handleRefresh = this.handleRefresh.bind(this)
@@ -39,7 +40,17 @@ export default class HomeScreen extends React.Component {
                     <SearchBar style={styles.searchBar}
                         platform='android'
                         placeholder='Type Here...' 
-                        // onSubmitEditing={(text) => handleSearchText(text)}
+                        onChangeText={(text) => {
+                            if (text == null) {
+                                this.setState({searchText: ''});
+                            } else {
+                                this.setState({searchText: 'keyword/' + text});
+                            }    
+                        }}
+                        onSubmitEditing={(event) => {
+                            console.log("keyword is: " + this.state.searchText);
+                            this.handleRefresh();
+                        }}
                         containerStyle={{
                             backgroundColor: colorCodes.mintCustom,
                             width: '92%'
@@ -78,7 +89,7 @@ export default class HomeScreen extends React.Component {
                     }}
                 />
             </View>
-        )
+        );
     }
 
     // A simple separator to separate listings in the view
@@ -96,14 +107,12 @@ export default class HomeScreen extends React.Component {
     };
 
     handleRefresh() {
-        this.setState({
-            refreshing: true
-        }, () => this.getAllListings());
+        this.getAllListings();
     }
 
     // Uses GET request to query all listing data
     getAllListings() {
-        fetch('https://flick-prod.herokuapp.com/listings/', {
+        fetch('https://flick-prod.herokuapp.com/listings/' + this.state.searchText, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -128,25 +137,10 @@ export default class HomeScreen extends React.Component {
                     refreshing: false,
                 });
             }
+
+            console.log(this.state.listingData);
         })
         .done();
-    }
-
-    handleSearchText(searchVal) {
-        fetch('https://flick-prod.herokuapp.com/test/listings/', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
-            },
-            body: searchVal
-        })
-    }
-
-    handleRefresh() {
-        // this.setState({
-        //     refreshing: true
-        // });
-        this.getAllListings();
     }
 
     // After component renders, get the listing data for the list
